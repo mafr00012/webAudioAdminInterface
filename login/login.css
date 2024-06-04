@@ -1,0 +1,19 @@
+.Login-container {
+  padding-left: 45vw;
+  padding-top: 30vh;
+  width: 11vw;
+  display: flex;
+  flex-direction: column;
+}
+.Login-container input {
+  margin-bottom: 10px;
+}
+#loginButton{
+  margin-left: 3vw;
+  width: 5vw;
+}
+#KontoErstellenLink{
+  margin-left: 3vw;
+  margin-top: 2vh;
+  color: blue;
+}

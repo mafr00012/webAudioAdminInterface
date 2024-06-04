@@ -1,0 +1,13 @@
+.navBar{
+  top: 0;
+  left: 0;
+  position: fixed;
+  height: 4vh;
+  width: 100%;
+  background-color: cornflowerblue;
+}
+.backbutton{
+  position: fixed;
+  left: 1vh;
+  margin: 1vh;
+}

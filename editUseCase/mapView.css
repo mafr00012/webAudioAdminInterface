@@ -1,0 +1,125 @@
+#editUseCaseNavbarSideBarManageButton{
+  position: fixed;
+  left: 16.8vw;
+  margin: 1vh;
+}
+.mainContainer{
+  height: 69%;
+  width: 100%;
+  margin-top: 4vh;
+}
+.fullMap {
+  height: 96vh;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+}
+.mapWithMarkerMenu{
+  height: 60vh;
+  width: 100%;
+  position: fixed;
+  left: 0;
+}
+.mapWithMarkerMenuAndSidebar{
+  position: fixed;
+  right: 0;
+  height: 60vh;
+  width: 79.8vw;
+}
+.mapWithSidebar{
+  height: 96vh;
+  width: 79.8vw;
+  position: fixed;
+  right: 0;
+}
+.editUseCaseSidebar{
+  width: 20%;
+  height: 96vh;
+  border: 1px solid black;
+  position: fixed;
+  left: 1px;
+}
+.editUseCaseSidebarInvisible{
+  display: none;
+  width: 0;
+}
+#editUseCaseSidebarListOfPOI{
+  height: 93vh;
+  margin-top:1vh;
+  overflow-y: auto;
+  border: 1px solid black;
+}
+.markerMenu{
+  display: none;
+  height: 0;
+}
+.visiblemarkerMenu{
+  border-top: 1px solid black;
+  height: 36vh;
+  position: fixed;
+  width: 100%;
+  right: 0;
+  bottom: 0;
+}
+.editUseCaseMarkerMenuWithSidebar{
+  border-top: 1px solid black;
+  height: 36vh;
+  width: 79.8vw;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+}
+#markerMenuCloseButton{
+  margin-top: 3px;
+  float: right;
+}
+#markerLoeschenButton{
+  position: absolute;
+  margin-top: 3px;
+  right: 50%;
+}
+#bearbeitungsModusButton{
+  position: absolute;
+  margin-top: 3px;
+  right: 30%;
+}
+.markerDatenBearbeitungsmodus{
+  display: none;
+}
+.markerDatenBearbeitungsmodusVisible{
+  width: 50%;
+  border: 1px solid black;
+  float: right;
+  margin-top: 2%;
+  height: 85%;
+}
+.markerDatenAnzeige{
+  width: 50%;
+  border: 1px solid black;
+  float: right;
+  margin-top: 2%;
+  height: 85%;
+}
+.markerDatenAnzeigeInvisible{
+  display: none;
+}
+.drop-zone {
+  width: 300px;
+  height: 200px;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  color: #aaa;
+  margin: 5%;
+  position: absolute;
+  right: 5%
+}
+.drop-zone.dragover {
+  border-color: #333;
+  color: #333;
+}

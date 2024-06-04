@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaflet Karte Beispiel</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="mapView.css">
+  <link rel="stylesheet" href="../css/Navbar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+  <style>
+    .sortable-list {
+      list-style-type: none;
+      padding: 0;
+    }
+    .sortable-list li {
+      padding: 10px;
+      margin: 5px 0;
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      cursor: grab;
+    }
+  </style>
+</head>
+<body>
+<div class="navBar">
+  <button id="fromEditusecaseToUsecaseselectionButton" class="backbutton" > Back</button>
+  <button id="editUseCaseNavbarSideBarManageButton">Sidebar</button>
+</div>
+<div class="mainContainer">
+  <div id="map" class="mapWithSidebar"></div>
+  <div class="markerMenu" id="markerMenu">
+    <button id="markerLoeschenButton">loeschen</button>
+    <button id="markerMenuCloseButton">X</button>
+    <button id="bearbeitungsModusButton">bearbeiten</button>
+    <div id="markerDatenBearbeitungsmodus" class="markerDatenBearbeitungsmodus">
+      <div class="drop-zone" id="drop-zone">
+        Ziehe eine Datei hierher
+      </div>
+    </div>
+    <div id="markerDatenAnzeige" class="markerDatenAnzeige">
+      <p id="breitengradAnzeige">Hallo</p>
+      <p id="laengengradAnzeige">Hi</p>
+    </div>
+  </div>
+  <div id="editUseCaseSidebar" class="editUseCaseSidebar">
+    <button onclick="addItem()">Add Item</button>
+    <div id="editUseCaseSidebarListScrollContainer">
+      <ul id="editUseCaseSidebarListOfPOI"></ul>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="mapView.js"></script>
+<script src="dragAndDropField.js"></script>
+<script>
+  let itemCount = 0;
+
+  function addItem() {
+    itemCount++;
+    const list = document.getElementById('editUseCaseSidebarListOfPOI');
+    const listItem = document.createElement('li');
+    const div = document.createElement('div');
+    div.className = 'list-item';
+    div.innerHTML = `<h2>Item ${itemCount}</h2><p>Dies ist das ${itemCount}. Element der Liste.</p>`;
+    listItem.appendChild(div);
+    list.appendChild(listItem);
+  }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+<script>
+  new Sortable(document.getElementById('editUseCaseSidebarListOfPOI'), {
+    animation: 150
+  });
+</script>
+</body>
+</html>
+
