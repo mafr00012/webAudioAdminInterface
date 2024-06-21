@@ -138,3 +138,11 @@ editUseCaseNavbarSideBarManageButton.addEventListener('click', function(){
 fromEditusecaseToUsecaseselectionButton.addEventListener("click",() => {
   window.location.href = "../useCaseSelection/mainScreen.html";
 })
+
+document.getElementById('toggleSwitch').addEventListener('change', function() {
+  if (this.checked) {
+    console.log('Switch is ON');
+  } else {
+    console.log('Switch is OFF');
+  }
+});

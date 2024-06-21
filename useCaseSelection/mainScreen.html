@@ -15,10 +15,13 @@
   </style>
 </head>
 <body>
-  <div class="navBar"></div>
-  <div class="mainContainer" style="background">
+  <div class="navBar">
+    <button id="logoutButton">Log out</button>
+  </div>
+  <div class="mainContainer">
     <a href="../editUseCase/mapView.html">mapView</a>
     <button onclick="addItem()">Add Item</button>
+    <button>Add UseCase</button>
     <div id="useCaseListScrollContainer" style="background-color: white">
       <ul id="dynamicList"></ul>
     </div>
@@ -27,16 +30,36 @@
   <script>
     let itemCount = 0;
 
+    function loadItems() {
+      fetch("http://localhost:3000/uscasesAdmin")
+    }
+
     function addItem() {
       itemCount++;
       const list = document.getElementById('dynamicList');
       const listItem = document.createElement('li');
       const div = document.createElement('div');
       div.className = 'list-item';
-      div.innerHTML = `<h2>Item ${itemCount}</h2><p>Dies ist das ${itemCount}. Element der Liste.</p><a href="../editUseCase/mapView.html">mapView</a>`;
+      div.innerHTML = `<h2>Item ${itemCount}</h2><p>Dies ist das ${itemCount}. Element der Liste.</p><a href="../editUseCase/mapView.html">mapView</a><button>Delete</button>`;
       listItem.appendChild(div);
       list.appendChild(listItem);
     }
   </script>
+  <script>
+    const logoutButton = document.getElementById('logoutButton');
+
+    logoutButton.addEventListener("click", function() {
+    fetch('http://localhost:3000/logout', {
+      method:"GET",
+    }).then(response => response.text())
+      .then(data => {
+        if(data === 'true'){
+          window.location.href = '../login/login.html'
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error)
+      })
+  })</script>
 </body>
 </html>
