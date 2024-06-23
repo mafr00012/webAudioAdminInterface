@@ -12,7 +12,8 @@
     fetch('http://localhost:3000/loginAdmin', {
       method:"POST",
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({ username: usernameValue , password: passwordValue})
+      body:JSON.stringify({ username: usernameValue , password: passwordValue}),
+      credentials:"include"
     })
       .then(response => response.text())
       .then(data => {

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>MainSceen</title>
-  <link rel="stylesheet" href="useCaseSelection.css">
+  <link rel="stylesheet" href="./useCaseSelection.css">
   <link rel="stylesheet" href="../css/Navbar.css">
   <style>
     body {
@@ -27,39 +27,6 @@
     </div>
   </div>
 
-  <script>
-    let itemCount = 0;
-
-    function loadItems() {
-      fetch("http://localhost:3000/uscasesAdmin")
-    }
-
-    function addItem() {
-      itemCount++;
-      const list = document.getElementById('dynamicList');
-      const listItem = document.createElement('li');
-      const div = document.createElement('div');
-      div.className = 'list-item';
-      div.innerHTML = `<h2>Item ${itemCount}</h2><p>Dies ist das ${itemCount}. Element der Liste.</p><a href="../editUseCase/mapView.html">mapView</a><button>Delete</button>`;
-      listItem.appendChild(div);
-      list.appendChild(listItem);
-    }
-  </script>
-  <script>
-    const logoutButton = document.getElementById('logoutButton');
-
-    logoutButton.addEventListener("click", function() {
-    fetch('http://localhost:3000/logout', {
-      method:"GET",
-    }).then(response => response.text())
-      .then(data => {
-        if(data === 'true'){
-          window.location.href = '../login/login.html'
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error)
-      })
-  })</script>
+  <script src ="./useCaseSelection.js"></script>
 </body>
 </html>

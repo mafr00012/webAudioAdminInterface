@@ -58,20 +58,6 @@
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="mapView.js"></script>
 <script src="dragAndDropField.js"></script>
-<script>
-  let itemCount = 0;
-
-  function addItem() {
-    itemCount++;
-    const list = document.getElementById('editUseCaseSidebarListOfPOI');
-    const listItem = document.createElement('li');
-    const div = document.createElement('div');
-    div.className = 'list-item';
-    div.innerHTML = `<h2>Item ${itemCount}</h2><p>Dies ist das ${itemCount}. Element der Liste.</p>`;
-    listItem.appendChild(div);
-    list.appendChild(listItem);
-  }
-</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
 <script>
   new Sortable(document.getElementById('editUseCaseSidebarListOfPOI'), {

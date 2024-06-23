@@ -45,21 +45,7 @@ function openMenue(){
 function onMapClick(e) {
   var latitude = e.latlng.lat
   var longitude = e.latlng.lng
-  const marker = L.marker([latitude, longitude]).addTo(map);
-
-  if(longitude > 180 || longitude < -180){
-    longitude = longitude % 180
-  }
-
-  marker.on('click', function(){
-    currentMarker = marker
-    breitengradAnzeige.textContent = `Breitengrad: ${latitude}`
-    laengengradAnzeige.textContent = `Längengrad: ${longitude}`
-    openMenue()
-  })
-  currentMarker = marker
-  breitengradAnzeige.textContent = `Breitengrad: ${latitude}`
-  laengengradAnzeige.textContent = `Längengrad: ${longitude}`
+  addPoiToMap(latitude, longitude)
   openMenue()
 
   console.log("Koordinaten: ", latitude, longitude);
@@ -146,3 +132,58 @@ document.getElementById('toggleSwitch').addEventListener('change', function() {
     console.log('Switch is OFF');
   }
 });
+
+document.addEventListener("DOMContentLoaded", loadPoiItems)
+
+function loadPoiItems(){
+  fetch("http://localhost:3000/pois",{
+    method:"GET",
+    credentials:"include"
+  })
+    .then(result => result.json())
+    .then(data => {
+      data.forEach(value => {
+        const marker = addPoiToMap(value.x_coordinate, value.y_coordinate)
+        addItem(value, marker)
+      })
+    })
+    .catch(error => {
+      console.error('Error:', error)
+      window.location.href = '../login/login.html'
+    })
+}
+function addItem(itemData, marker) {
+  const list = document.getElementById('editUseCaseSidebarListOfPOI');
+  const listItem = document.createElement('li');
+  const div = document.createElement('div');
+  div.className = 'list-item';
+  div.innerHTML = `<h2>Item </h2><p>${itemData.id}</p>`;
+  div.onclick = function() {setCurrentMarker(marker);
+                                  div.style = 'background-color: #555555'};
+  listItem.appendChild(div);
+  list.appendChild(listItem);
+}
+
+function setCurrentMarker(marker){
+  currentMarker = marker;
+  openMenue()
+}
+
+function addPoiToMap(latitude, longitude){
+  const marker = L.marker([latitude, longitude]).addTo(map);
+
+  if(longitude > 180 || longitude < -180){
+    longitude = longitude % 180
+  }
+
+  marker.on('click', function(){
+    currentMarker = marker
+    breitengradAnzeige.textContent = `Breitengrad: ${latitude}`
+    laengengradAnzeige.textContent = `Längengrad: ${longitude}`
+    openMenue()
+  })
+  currentMarker = marker
+  breitengradAnzeige.textContent = `Breitengrad: ${latitude}`
+  laengengradAnzeige.textContent = `Längengrad: ${longitude}`
+  return marker
+}
