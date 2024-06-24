@@ -17,10 +17,113 @@ const openStreatMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 })
 
+function poiItem(latitude, longitude, marker, listDiv){
+  const poi = {
+    latitude: latitude,
+    longitude: longitude,
+    marker: marker,
+    div: listDiv
+  }
+  return poi
+}
+
 openStreatMap.addTo(map);
 
 function loadMap(){
   openStreatMap.addTo(map);
+}
+
+document.addEventListener("DOMContentLoaded", loadPoiItems)
+
+function loadPoiItems(){
+  fetch("http://localhost:3000/pois",{
+    method:"GET",
+    credentials:"include"
+  })
+    .then(result => result.json())
+    .then(data => {
+      data.forEach(value => {
+        addPoiToMap(value.x_coordinate, value.y_coordinate, true, value)
+      })
+    })
+    .catch(error => {
+      console.error('Error:', error)
+      window.location.href = '../login/login.html'
+    })
+}
+
+function onMapClick(e) {
+  var latitude = e.latlng.lat
+  var longitude = e.latlng.lng
+  addPoiToMap(latitude, longitude, false, null)
+}
+
+map.on('click', onMapClick);
+
+function addPoiToMap(latitude, longitude, exists, value){
+  const marker = L.marker([latitude, longitude]).addTo(map);
+  const poi = poiItem(latitude, longitude, marker)
+  if(exists){
+    addExistingPoiToList(value, poi)
+  } else {
+    addItem(poi)
+  }
+  marker.on('click', function(){
+    setCurrentMarker(poi)
+  })
+  setCurrentMarker(poi)
+  return poi
+}
+
+function addExistingPoiToList(itemValue, poi) {
+  addItem(poi)
+  const div = poi.div
+  div.innerHTML = '<h1>titel</h1><p>${itemValue.id} </p>';
+  return div
+}
+
+let chosenDiv = null
+function addItem(poi) {
+  const list = document.getElementById('editUseCaseSidebarListOfPOI');
+  const listItem = document.createElement('li');
+  const div = document.createElement('div');
+  div.className = 'list-item';
+  div.innerHTML = `<h2>titel </h2><p>Bearbeite den Punkt im Bearbeitungsmenu</p>`;
+  poi.div = div;
+  div.onclick = function() {setCurrentMarker(poi);};
+  listItem.appendChild(div);
+  list.appendChild(listItem);
+  return div
+}
+
+function setCurrentMarker(poi) {
+  const marker = poi.marker
+  const latitude = poi.latitude
+  let longitude = poi.longitude
+
+  console.log(latitude)
+  console.log(longitude)
+  if(longitude > 180 || longitude < -180){
+    longitude = longitude % 180
+  }
+
+  currentMarker = marker
+  breitengradAnzeige.textContent = `Breitengrad: ${latitude}`
+  laengengradAnzeige.textContent = `Längengrad: ${longitude}`
+  changeBackgroundColorOfChosenListItem(poi)
+  openMenue()
+}
+
+function changeBackgroundColorOfChosenListItem(poi){
+  const div = poi.div
+  if(chosenDiv === null){
+    chosenDiv = div
+    div.style = 'background-color: #555555'
+  }else{
+    chosenDiv.style = 'background-color: white'
+    div.style = 'background-color: #555555'
+    chosenDiv = div
+  }
 }
 
 function openMenue(){
@@ -41,17 +144,6 @@ function openMenue(){
     loadMap()
   }
 }
-
-function onMapClick(e) {
-  var latitude = e.latlng.lat
-  var longitude = e.latlng.lng
-  addPoiToMap(latitude, longitude)
-  openMenue()
-
-  console.log("Koordinaten: ", latitude, longitude);
-}
-
-map.on('click', onMapClick);
 
 closeButton.addEventListener('click', function (){
   if(mapClassList.contains('mapWithMarkerMenu')){
@@ -132,58 +224,3 @@ document.getElementById('toggleSwitch').addEventListener('change', function() {
     console.log('Switch is OFF');
   }
 });
-
-document.addEventListener("DOMContentLoaded", loadPoiItems)
-
-function loadPoiItems(){
-  fetch("http://localhost:3000/pois",{
-    method:"GET",
-    credentials:"include"
-  })
-    .then(result => result.json())
-    .then(data => {
-      data.forEach(value => {
-        const marker = addPoiToMap(value.x_coordinate, value.y_coordinate)
-        addItem(value, marker)
-      })
-    })
-    .catch(error => {
-      console.error('Error:', error)
-      window.location.href = '../login/login.html'
-    })
-}
-function addItem(itemData, marker) {
-  const list = document.getElementById('editUseCaseSidebarListOfPOI');
-  const listItem = document.createElement('li');
-  const div = document.createElement('div');
-  div.className = 'list-item';
-  div.innerHTML = `<h2>Item </h2><p>${itemData.id}</p>`;
-  div.onclick = function() {setCurrentMarker(marker);
-                                  div.style = 'background-color: #555555'};
-  listItem.appendChild(div);
-  list.appendChild(listItem);
-}
-
-function setCurrentMarker(marker){
-  currentMarker = marker;
-  openMenue()
-}
-
-function addPoiToMap(latitude, longitude){
-  const marker = L.marker([latitude, longitude]).addTo(map);
-
-  if(longitude > 180 || longitude < -180){
-    longitude = longitude % 180
-  }
-
-  marker.on('click', function(){
-    currentMarker = marker
-    breitengradAnzeige.textContent = `Breitengrad: ${latitude}`
-    laengengradAnzeige.textContent = `Längengrad: ${longitude}`
-    openMenue()
-  })
-  currentMarker = marker
-  breitengradAnzeige.textContent = `Breitengrad: ${latitude}`
-  laengengradAnzeige.textContent = `Längengrad: ${longitude}`
-  return marker
-}
