@@ -55,6 +55,23 @@ function loadPoiItems(){
 function onMapClick(e) {
   var latitude = e.latlng.lat
   var longitude = e.latlng.lng
+  if(longitude > 180 || longitude < -180){
+    longitude = longitude % 180
+  }
+  fetch("http://localhost:3000/pois",{
+    method:"POST",
+    credentials:"include",
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({order: "1", x_coordinate: latitude, y_coordinate: longitude}),
+  })
+    .then(result => result.text())
+    .then(data => {
+      console.log(data)
+    })
+    .catch(error => {
+      console.error('Error:', error)
+      window.location.href = '../login/login.html'
+    })
   addPoiToMap(latitude, longitude, false, null)
 }
 
@@ -103,9 +120,6 @@ function setCurrentMarker(poi) {
 
   console.log(latitude)
   console.log(longitude)
-  if(longitude > 180 || longitude < -180){
-    longitude = longitude % 180
-  }
 
   currentMarker = marker
   breitengradAnzeige.textContent = `Breitengrad: ${latitude}`
