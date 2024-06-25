@@ -19,9 +19,13 @@
     <button id="logoutButton">Log out</button>
   </div>
   <div class="mainContainer">
-    <a href="../editUseCase/mapView.html">mapView</a>
-    <button onclick="addItem()">Add Item</button>
-    <button>Add UseCase</button>
+    <div id="useCaseAddContainer">
+      <p>Titel:</p>
+      <input id="useCaseInputTitel" type="text">
+      <p>Beschreibung:</p>
+      <input id="useCaseInputDescription" type="text">
+      <button id="useCaseAddButton">Hinzufügen</button>
+    </div>
     <div id="useCaseListScrollContainer" style="background-color: white">
       <ul id="dynamicList"></ul>
     </div>

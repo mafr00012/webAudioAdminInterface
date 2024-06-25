@@ -5,10 +5,23 @@
 }
 #useCaseListScrollContainer{
   position: fixed;
+  top: 6vh;
   left: 40vw;
   width: 30vw;
   border: 1px solid black;
   overflow: auto;
   height: 92vh;
 }
-
+#useCaseAddButton{
+  position: absolute;
+  top: 20vh;
+}
+#useCaseAddContainer{
+  position: relative;
+  border: 1px solid black;
+  height: 50vh;
+  width: 20vw;
+  left: 10vw;
+  top: 19vh;
+  background-color: white;
+}
