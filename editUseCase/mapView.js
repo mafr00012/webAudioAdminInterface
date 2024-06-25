@@ -12,13 +12,16 @@ const bearbeitungsModusButton = document.getElementById('bearbeitungsModusButton
 const editUseCaseNavbarSideBarManageButton = document.getElementById('editUseCaseNavbarSideBarManageButton');
 const editUseCaseSidebarClassList = document.getElementById('editUseCaseSidebar').classList;
 const fromEditusecaseToUsecaseselectionButton = document.getElementById('fromEditusecaseToUsecaseselectionButton');
-var currentMarker = null
+const editUseCaseNameInput = document.getElementById('editUseCaseNameInput')
+const editUseCaseApplyChangesButton = document.getElementById('editUseCaseApplyChangesButton')
+let currentPoi = null
 const openStreatMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 })
 
-function poiItem(latitude, longitude, marker, listDiv){
+function poiItem(id, latitude, longitude, marker, listDiv){
   const poi = {
+    id: id,
     latitude: latitude,
     longitude: longitude,
     marker: marker,
@@ -43,7 +46,7 @@ function loadPoiItems(){
     .then(result => result.json())
     .then(data => {
       data.forEach(value => {
-        addPoiToMap(value.x_coordinate, value.y_coordinate, true, value)
+        addPoiToMap(value.x_coordinate, value.y_coordinate, value)
       })
     })
     .catch(error => {
@@ -67,66 +70,58 @@ function onMapClick(e) {
     .then(result => result.text())
     .then(data => {
       console.log(data)
+      const list = document.getElementById('editUseCaseSidebarListOfPOI');
+      list.innerHTML = '';
+      loadPoiItems()
     })
     .catch(error => {
       console.error('Error:', error)
       window.location.href = '../login/login.html'
     })
-  addPoiToMap(latitude, longitude, false, null)
 }
 
 map.on('click', onMapClick);
 
-function addPoiToMap(latitude, longitude, exists, value){
+function addPoiToMap(latitude, longitude, value){
   const marker = L.marker([latitude, longitude]).addTo(map);
-  const poi = poiItem(latitude, longitude, marker)
-  if(exists){
-    addExistingPoiToList(value, poi)
-  } else {
-    addItem(poi)
-  }
+  const poi = poiItem(value.id, latitude, longitude, marker)
+  addExistingPoiToList(value, poi)
   marker.on('click', function(){
-    setCurrentMarker(poi)
+    setCurrentPoi(poi)
   })
-  setCurrentMarker(poi)
+  setCurrentPoi(poi)
   return poi
 }
 
 function addExistingPoiToList(itemValue, poi) {
-  addItem(poi)
-  const div = poi.div
-  div.innerHTML = '<h1>titel</h1><p>${itemValue.id} </p>';
-  return div
-}
-
-let chosenDiv = null
-function addItem(poi) {
   const list = document.getElementById('editUseCaseSidebarListOfPOI');
   const listItem = document.createElement('li');
   const div = document.createElement('div');
   div.className = 'list-item';
-  div.innerHTML = `<h2>titel </h2><p>Bearbeite den Punkt im Bearbeitungsmenu</p>`;
+  div.innerHTML = '<h1>titel</h1><p>${itemValue.id} </p>';
   poi.div = div;
-  div.onclick = function() {setCurrentMarker(poi);};
+  poi.id = itemValue.id
+  div.onclick = function() {setCurrentPoi(poi);};
   listItem.appendChild(div);
   list.appendChild(listItem);
   return div
 }
 
-function setCurrentMarker(poi) {
-  const marker = poi.marker
+function setCurrentPoi(poi) {
   const latitude = poi.latitude
   let longitude = poi.longitude
 
   console.log(latitude)
   console.log(longitude)
 
-  currentMarker = marker
+  currentPoi = poi
   breitengradAnzeige.textContent = `Breitengrad: ${latitude}`
   laengengradAnzeige.textContent = `Längengrad: ${longitude}`
   changeBackgroundColorOfChosenListItem(poi)
   openMenue()
 }
+
+let chosenDiv = null
 
 function changeBackgroundColorOfChosenListItem(poi){
   const div = poi.div
@@ -159,6 +154,26 @@ function openMenue(){
   }
 }
 
+editUseCaseApplyChangesButton.addEventListener('click', function(){
+  const name = editUseCaseNameInput.value
+  const poiId = currentPoi.id
+  console.log(poiId)
+  fetch(`http://localhost:3000/pois/${currentPoi.id}`,{
+    method:"PUT",
+    credentials:"include",
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({order: "1", x_coordinate: latitude, y_coordinate: longitude}),
+  })
+    .then(result => result.text())
+    .then(data => {
+      console.log(data)
+    })
+    .catch(error => {
+      console.error('Error:', error)
+      window.location.href = '../login/login.html'
+    })
+})
+
 closeButton.addEventListener('click', function (){
   if(mapClassList.contains('mapWithMarkerMenu')){
     mapClassList.remove('mapWithMarkerMenu')
@@ -176,7 +191,7 @@ closeButton.addEventListener('click', function (){
 })
 
 markerDeleteButton.addEventListener('click', function() {
-  map.removeLayer(currentMarker)
+  map.removeLayer(currentPoi.marker)
   breitengradAnzeige.textContent = "Breitengrad: "
   laengengradAnzeige.textContent = "Längengrad: "
 })
@@ -194,6 +209,8 @@ bearbeitungsModusButton.addEventListener('click', function(){
     markerDatenAnzeigeClassList.add('markerDatenAnzeige');
   }
 })
+
+
 
 editUseCaseNavbarSideBarManageButton.addEventListener('click', function(){
   if(editUseCaseSidebarClassList.contains('editUseCaseSidebar')){
