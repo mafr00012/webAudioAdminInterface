@@ -25,3 +25,9 @@
   top: 19vh;
   background-color: white;
 }
+.useCaseUpdateContainer{
+  display: none;
+}
+.useCaseUpdateContainerVisible{
+
+}
