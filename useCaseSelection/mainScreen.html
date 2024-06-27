@@ -38,8 +38,12 @@
     <div id="useCaseListScrollContainer" style="background-color: white">
       <ul id="dynamicList"></ul>
     </div>
+    <canvas id="qrcodeCanvas" style="position: fixed; width: 10vw; height: 10vh; right: 0"></canvas>
+    <button id="generateButton">Generate QR Code</button>
   </div>
 
   <script src ="./useCaseSelection.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 </body>
 </html>

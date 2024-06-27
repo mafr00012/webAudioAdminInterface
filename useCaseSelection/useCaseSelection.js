@@ -25,7 +25,7 @@ function addItem(itemdata) {
   const div = document.createElement('div');
   div.className = 'list-item';
   div.innerHTML = `<h2>${itemdata.titel}</h2><p>${itemdata.beschreibung}</p><button onclick="openUseCase(${itemdata.id})">Öffnen</button><button class="listItemDeleteButton">Löschen</button>
-    <button class="useCaseUpdateButton">Bearbeiten</button> <button>QR-Code ansehen</button>`;
+    <button class="useCaseUpdateButton">Bearbeiten</button> <button onclick="generateQRCode(${itemdata.id})">QR-Code ansehen</button>`;
   listItem.appendChild(div);
   list.appendChild(listItem);
 
@@ -154,3 +154,48 @@ logoutButton.addEventListener("click", function() {
       console.error('Error:', error)
     })
 })
+
+function generateQRCode(number){
+  const url = 'http://mankam.ddns.net:4000';
+  const code = `Code: ${number}`;
+
+  QRCode.toDataURL(url, { width: 100, height: 100 }, function (err, qrCodeDataURL) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+
+    const canvas = document.getElementById('qrcodeCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Clear the canvas before drawing
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw the QR code
+    const img = new Image();
+    img.src = qrCodeDataURL;
+    img.onload = () => {
+      ctx.drawImage(img, 0, 0);
+
+      // Draw the number under the QR code
+      ctx.font = '16px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText(code, 40, 120);
+    };
+
+    // Send QR code to the server
+    /*fetch('/save-qrcode', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ qrCodeDataURL })
+    })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('message').innerText = data.message;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('message').innerText = 'Error saving QR code';
+      });*/
+  });
+}
