@@ -50,7 +50,7 @@
   <div id="editUseCaseSidebar" class="editUseCaseSidebar">
     <label class="switch">
       <input type="checkbox" id="toggleSwitch">
-      <span class="slider round"></span>
+      <span id="slider round" class="slider round"></span>
     </label>
     <div id="editUseCaseSidebarListScrollContainer">
       <ul id="editUseCaseSidebarListOfPOI"></ul>
@@ -64,7 +64,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
 <script>
   new Sortable(document.getElementById('editUseCaseSidebarListOfPOI'), {
-    animation: 150
+    animation: 150,
+    onEnd: function (event) {
+      if (orderIsImportent) {
+        sendOrderToServer();
+      }
+    }
   });
 </script>
 </body>

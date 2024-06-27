@@ -17,6 +17,7 @@ const editUseCaseNameInput = document.getElementById('editUseCaseNameInput')
 const editUseCaseApplyChangesButton = document.getElementById('editUseCaseApplyChangesButton')
 let currentPoi = null
 let orderIsImportent = false;
+let countOfPois = 0;
 const list = document.getElementById('editUseCaseSidebarListOfPOI');
 const openStreatMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -40,9 +41,10 @@ function loadMap(){
   openStreatMap.addTo(map);
 }
 
-document.addEventListener("DOMContentLoaded", loadPoiItems)
+document.addEventListener("DOMContentLoaded", isOrderOfPoisImportent)
 
 function loadPoiItems(){
+  countOfPois = 0;
   fetch("http://localhost:3000/pois",{
     method:"GET",
     credentials:"include"
@@ -53,7 +55,11 @@ function loadPoiItems(){
       if(currentPoi != null){
         lastCurrentPoi = currentPoi
       }
+      if(orderIsImportent){
+        data.sort((a, b) => a.order - b.order);
+      }
       data.forEach(value => {
+        countOfPois++;
         const poi = poiItem(value)
         addPoiToMap(poi)
       })
@@ -68,7 +74,24 @@ function loadPoiItems(){
 }
 
 function isOrderOfPoisImportent(){
-  fetch("http://localhost:3000/")
+  fetch("http://localhost:3000/chosenUseCase", {
+    method: "GET",
+    credentials: "include",
+  }).then(result => result.json())
+    .then(data => {
+      console.log(data.fixed_order)
+      if(data.fixed_order === 1){
+        orderIsImportent = true
+        setSwitchOn()
+        loadPoiItems()
+      }else{
+        orderIsImportent = false
+        setSwitchOff()
+      }
+    }).catch(error => {
+    console.error('Error:', error)
+    window.location.href = '../login/login.html'
+  })
 }
 
 function onMapClick(e) {
@@ -81,7 +104,7 @@ function onMapClick(e) {
     method:"POST",
     credentials:"include",
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({order: "1", x_coordinate: latitude, y_coordinate: longitude, name: "titel"}),
+    body:JSON.stringify({order: countOfPois, x_coordinate: latitude, y_coordinate: longitude, name: "titel"}),
   })
     .then(result => result.text())
     .then(data => {
@@ -114,7 +137,7 @@ function addPoiToList(poi) {
   const listItem = document.createElement('li');
   const div = document.createElement('div');
   div.className = 'list-item';
-  div.innerHTML = `<h1>${itemValue.name}</h1><p>${itemValue.id} </p>`;
+  div.innerHTML = `<h1>${itemValue.name}</h1><p style="display: none">seperator${itemValue.id}seperator</p>`;
   poi.div = div;
   div.onclick = function() {setCurrentPoi(poi);};
   listItem.appendChild(div);
@@ -290,42 +313,56 @@ fromEditusecaseToUsecaseselectionButton.addEventListener("click",() => {
 })
 
 const toggleSwitch = document.getElementById('toggleSwitch');
-document.getElementById('toggleSwitch').addEventListener('change', function() {
+toggleSwitch.addEventListener('change', function() {
   orderIsImportent = this.checked;
   if (this.checked) {
     console.log('Switch is ON');
+    sendOrderToServer()
+    fetch("http://localhost:3000/updateFixedOrderOfChosenUseCase", {
+      method: "PUT",
+      credentials: "include",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({fixed_order: "1"}),
+    }).then(response => response.text())
+      .then(data => console.log(data))
+      .catch(error => console.error('Error:', error));
   } else {
     console.log('Switch is OFF');
+    fetch("http://localhost:3000/updateFixedOrderOfChosenUseCase", {
+      method: "PUT",
+      credentials: "include",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({fixed_order: "0"}),
+    }).then(response => response.text())
+      .then(data => console.log(data))
+      .catch(error => console.error('Error:', error));
   }
 });
 
-function switchToggleSwitch(){
-
+function setSwitchOn() {
+  console.log("toggleSwitch true")
+  toggleSwitch.checked = true;
 }
 
-Sortable.create(list, {
-  animation: 150,
-  onEnd: function(event) {
-    if (isToggleSwitchOn) {
-      sendOrderToServer();
-    }
-  }
-});
+function setSwitchOff() {
+  console.log("toggleSwitch false")
+  toggleSwitch.checked = false;
+}
 
 function sendOrderToServer() {
-  const items = listElement.getElementsByTagName('li');
+  const items = list.getElementsByTagName('li');
   const order = Array.from(items).map((item, index) => {
-    const poiId = item.querySelector('div').innerHTML.split(' ')[1].trim(); // Assuming POI ID is in the div's innerHTML
+    const poiId = item.querySelector('div').innerHTML.split('seperator')[1].trim(); // Assuming POI ID is in the div's innerHTML
     return { id: poiId, order: index + 1 };
   });
 
   fetch('http://localhost:3000/updatePoiOrder', {
-    method: 'POST',
+    method: 'PUT',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(order),
+    body: JSON.stringify({newOrder: order}),
   })
-    .then(response => response.json())
+    .then(response => response.text())
     .then(data => console.log(data))
     .catch(error => console.error('Error:', error));
 }
