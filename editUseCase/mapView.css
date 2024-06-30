@@ -105,20 +105,21 @@
   display: none;
 }
 .drop-zone {
-  width: 300px;
-  height: 200px;
+  width: 10vw;
+  height: 10vh;
   border: 2px dashed #ccc;
   border-radius: 10px;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   text-align: center;
   font-family: Arial, sans-serif;
   color: #aaa;
-  margin: 5%;
   position: absolute;
-  right: 5%
+  margin-left: 20vw;
+  margin-top: 5vh;
 }
+
 .drop-zone.dragover {
   border-color: #333;
   color: #333;

@@ -1,5 +1,14 @@
 // Initialisierung der Karte und Festlegung des Ausgangszustands
-const map = L.map('map').setView([0, 0], 2);
+const map = L.map('map', {
+  center: [0, 0],
+  zoom: 3,
+  maxBounds: [
+    [-90, -180], // Südwestliche Begrenzung (Koordinaten)
+    [90, 180]    // Nordöstliche Begrenzung (Koordinaten)
+  ],
+  maxBoundsViscosity: 2.0 ,// Macht die Begrenzung 'klebrig'
+  minZoom: 3
+})
 const breitengradAnzeige = document.getElementById('breitengradAnzeige');
 const laengengradAnzeige = document.getElementById('laengengradAnzeige');
 const nameDisplay = document.getElementById('nameDisplay');
@@ -18,6 +27,7 @@ const editUseCaseApplyChangesButton = document.getElementById('editUseCaseApplyC
 let currentPoi = null
 let orderIsImportent = false;
 let countOfPois = 0;
+let bearbeitungsModusAktiv = false;
 const list = document.getElementById('editUseCaseSidebarListOfPOI');
 const openStreatMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -43,7 +53,7 @@ function loadMap(){
 
 document.addEventListener("DOMContentLoaded", isOrderOfPoisImportent)
 
-function loadPoiItems(){
+function loadPoiItems(jumpBackToLastCurrentPoi){
   countOfPois = 0;
   fetch("http://localhost:3000/pois",{
     method:"GET",
@@ -52,8 +62,11 @@ function loadPoiItems(){
     .then(result => result.json())
     .then(data => {
       let lastCurrentPoi = null
-      if(currentPoi != null){
+      if(jumpBackToLastCurrentPoi){
+        console.log("Ich mache lastCurrent = current")
         lastCurrentPoi = currentPoi
+      }else{
+        lastCurrentPoi = null
       }
       if(orderIsImportent){
         data.sort((a, b) => a.order - b.order);
@@ -62,8 +75,14 @@ function loadPoiItems(){
         countOfPois++;
         const poi = poiItem(value)
         addPoiToMap(poi)
+        if(lastCurrentPoi != null) {
+          if (poi.databaseData.id === lastCurrentPoi.databaseData.id) {
+            lastCurrentPoi = poi
+          }
+        }
       })
       if(lastCurrentPoi != null){
+        console.log("und sollte dann hier rein springen")
         setCurrentPoi(lastCurrentPoi)
       }
     })
@@ -83,10 +102,11 @@ function isOrderOfPoisImportent(){
       if(data.fixed_order === 1){
         orderIsImportent = true
         setSwitchOn()
-        loadPoiItems()
+        loadPoiItems(false)
       }else{
         orderIsImportent = false
         setSwitchOff()
+        loadPoiItems(false)
       }
     }).catch(error => {
     console.error('Error:', error)
@@ -110,7 +130,7 @@ function onMapClick(e) {
     .then(data => {
       console.log(data)
       clearListAndMap()
-      loadPoiItems()
+      loadPoiItems(false)
     })
     .catch(error => {
       console.error('Error:', error)
@@ -145,6 +165,7 @@ function addPoiToList(poi) {
 }
 
 function setCurrentPoi(poi) {
+  console.log("ich setze den currentPOI")
   const latitude = poi.databaseData.x_coordinate
   let longitude = poi.databaseData.y_coordinate
 
@@ -153,10 +174,14 @@ function setCurrentPoi(poi) {
 
   currentPoi = poi
 
-  editUseCaseNameInput.value = poi.databaseData.name
   nameDisplay.textContent = `Name: ${poi.databaseData.name}`
   breitengradAnzeige.textContent = `Breitengrad: ${latitude}`
   laengengradAnzeige.textContent = `Längengrad: ${longitude}`
+  if(bearbeitungsModusAktiv){
+    editUseCaseNameInput.value = poi.databaseData.name
+    setChosenSoundfileId(poi.databaseData.soundfile_id)
+    loadSoundfiles()
+  }
 
   changeBackgroundColorOfChosenListItem(poi)
   if(!markerMenuClassList.contains('visiblemarkerMenu')&&!markerMenuClassList.contains('editUseCaseMarkerMenuWithSidebar')){
@@ -215,7 +240,7 @@ editUseCaseApplyChangesButton.addEventListener('click', function(){
     .then(data => {
       console.log(data)
       clearListAndMap()
-      loadPoiItems()
+      loadPoiItems(true)
     })
     .catch(error => {
       console.error('Error:', error)
@@ -241,6 +266,9 @@ closeButton.addEventListener('click', function (){
 
 markerDeleteButton.addEventListener('click', function() {
   markers.removeLayer(currentPoi.marker)
+  nameDisplay.textContent = "Name: "
+  breitengradAnzeige.textContent = "Breitengrad: "
+  laengengradAnzeige.textContent = "Längengrad: "
   fetch(`http://localhost:3000/pois/${currentPoi.databaseData.id}`,{
     method:"DELETE",
     credentials:"include",
@@ -249,15 +277,12 @@ markerDeleteButton.addEventListener('click', function() {
     .then(data => {
       console.log(data)
       clearListAndMap()
-      loadPoiItems()
+      loadPoiItems(false)
     })
     .catch(error => {
       console.error('Error:', error)
       window.location.href = '../login/login.html'
     })
-  nameDisplay.textContent = "Name: "
-  breitengradAnzeige.textContent = "Breitengrad: "
-  laengengradAnzeige.textContent = "Längengrad: "
 })
 
 bearbeitungsModusButton.addEventListener('click', function(){
@@ -266,11 +291,16 @@ bearbeitungsModusButton.addEventListener('click', function(){
     markerDatenBearbeitungsmodusClassList.remove('markerDatenBearbeitungsmodus');
     markerDatenAnzeigeClassList.add('markerDatenAnzeigeInvisible');
     markerDatenBearbeitungsmodusClassList.add('markerDatenBearbeitungsmodusVisible');
+    bearbeitungsModusAktiv = true;
+    editUseCaseNameInput.value = currentPoi.databaseData.name
+    setChosenSoundfileId(currentPoi.databaseData.soundfile_id)
+    loadSoundfiles()
   }else{
     markerDatenBearbeitungsmodusClassList.remove('markerDatenBearbeitungsmodusVisible');
     markerDatenAnzeigeClassList.remove('markerDatenAnzeigeInvisible');
     markerDatenBearbeitungsmodusClassList.add('markerDatenBearbeitungsmodus');
     markerDatenAnzeigeClassList.add('markerDatenAnzeige');
+    bearbeitungsModusAktiv = false;
   }
 })
 
@@ -367,5 +397,19 @@ function sendOrderToServer() {
     .catch(error => console.error('Error:', error));
 }
 
-//is only managed, when the order of the pois is important
-const poiList = []
+function updatechosenSoundfileCurrentPoi(soundfile){
+  console.log("Ist das die richtige Soundfile zum updaten? " + soundfile.id)
+  fetch(`http://localhost:3000/updatePoiSoundfile/${currentPoi.databaseData.id}`,{
+    method: "PUT",
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({soundfile_id: soundfile.id})
+  })
+    .then(response => response.text())
+    .then(data => {
+      console.log(data)
+      setChosenSoundfileId(soundfile.id)
+      loadSoundfiles()
+    })
+    .catch(error => console.error('Error:', error));
+}
