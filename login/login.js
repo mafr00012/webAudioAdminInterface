@@ -3,8 +3,6 @@
   const password = document.getElementById('passwordLogin');
 
 
-  const email = "tralal@tralala"
-
   loginButton.addEventListener('click', function() {
     const usernameValue = username.value;
     const passwordValue = password.value;
