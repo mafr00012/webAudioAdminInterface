@@ -1,0 +1,24 @@
+.soundfile-list {
+  height: 10vh;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 5vh;
+  width: 10vw;
+  margin-left: 20vw;
+}
+
+.soundfile-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.soundfile-item input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.soundfile-item p {
+  margin: 0;
+  cursor: pointer;
+}

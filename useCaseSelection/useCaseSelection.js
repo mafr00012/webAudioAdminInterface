@@ -2,7 +2,6 @@ const useCaseUpdateContainerClassList = document.getElementById("useCaseUpdateCo
 document.addEventListener("DOMContentLoaded", loadItems)
 
 function loadItems() {
-  console.log("hallo")
   fetch("http://localhost:3000/usecasesAdmin",{
     method:"GET",
     credentials:"include"
@@ -52,24 +51,25 @@ function addItem(itemdata) {
       useCaseUpdateContainerClassList.remove("useCaseUpdateContainer")
       useCaseUpdateContainerClassList.add("useCaseUpdateContainerVisible")
     }
-    const useCaseUpdateInputTitel = document.getElementById("useCaseUpdateInputTitel")
-    const useCaseUpdateInputDescription = document.getElementById("useCaseUpdateInputDescription")
-    let titel
-    let description
-    if(!useCaseUpdateInputTitel.value){
-      titel = itemdata.titel
-    }else{
-      titel = useCaseUpdateInputTitel.value
-    }
-
-    if(!useCaseUpdateInputDescription.value){
-      description = itemdata.beschreibung
-    }else{
-      description = useCaseUpdateInputDescription.value
-    }
 
     const useCaseUpdateAddButton = document.getElementById("useCaseUpdateAddButton")
     useCaseUpdateAddButton.addEventListener("click", function() {
+      const useCaseUpdateInputTitel = document.getElementById("useCaseUpdateInputTitel")
+      const useCaseUpdateInputDescription = document.getElementById("useCaseUpdateInputDescription")
+      let titel
+      let description
+      if(!useCaseUpdateInputTitel.value){
+        titel = itemdata.titel
+      }else{
+        titel = useCaseUpdateInputTitel.value
+      }
+
+      if(!useCaseUpdateInputDescription.value){
+        description = itemdata.beschreibung
+      }else{
+        description = useCaseUpdateInputDescription.value
+      }
+
       fetch(`http://localhost:3000/usecases/${itemdata.id}`,{
         method:"PUT",
         credentials:"include",
@@ -79,6 +79,8 @@ function addItem(itemdata) {
         .then(result => result.text())
         .then(data => {
           console.log(data)
+          clearList()
+          loadItems()
         })
         .catch(error => {
           console.error('Error:', error)
@@ -98,7 +100,7 @@ function openUseCase(data){
   }).then(result => result.text())
     .then(data => {
       if(data === 'true'){
-        window.location.href = '../editUseCase/mapView.html'
+        window.location.href = '../poisView/poisView.html'
       }else{
         console.error("that didn't work")
       }
@@ -122,9 +124,7 @@ const inputDescription = document.getElementById('useCaseInputDescription')
 const addButton = document.getElementById('useCaseAddButton')
 addButton.addEventListener("click", function(){
   const titel = inputTitel.value
-  console.log(titel)
   const description = inputDescription.value
-  console.log(description)
   fetch('http://localhost:3000/usecasesAdmin', {
     method: "POST",
     credentials: "include",

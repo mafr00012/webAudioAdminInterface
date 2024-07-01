@@ -31,3 +31,10 @@
   right: 10vw;
   top: 19vh;
 }
+
+body {
+  background-image: url('weißesMusterBackground.jpg');
+  background-size: cover;
+  background-position: left 0;
+  background-repeat: no-repeat;
+}

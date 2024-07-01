@@ -50,7 +50,6 @@ function addSoundFileToList(soundfile){
   checkbox.type = 'checkbox';
   checkbox.name = 'soundfile';
   checkbox.value = soundfile.id;
-  console.log(soundfile.id + " " + chosenSoundfileId)
   if(soundfile.id === chosenSoundfileId){
     checkbox.checked = true;
   }

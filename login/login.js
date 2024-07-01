@@ -6,7 +6,6 @@
   loginButton.addEventListener('click', function() {
     const usernameValue = username.value;
     const passwordValue = password.value;
-    console.log(passwordValue);
     fetch('http://localhost:3000/loginAdmin', {
       method:"POST",
       headers:{'Content-Type':'application/json'},
@@ -16,7 +15,7 @@
       .then(response => response.text())
       .then(data => {
         if(data === 'true'){
-          window.location.href = '../useCaseSelection/mainScreen.html'
+          window.location.href = '../useCaseSelection/useCaseSelection.html'
         } else {
           console.error('Login failed:', data)
           alert('Login faild: '+ data)

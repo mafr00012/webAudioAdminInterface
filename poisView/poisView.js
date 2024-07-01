@@ -1,12 +1,11 @@
-// Initialisierung der Karte und Festlegung des Ausgangszustands
 const map = L.map('map', {
   center: [0, 0],
   zoom: 3,
   maxBounds: [
-    [-90, -180], // Südwestliche Begrenzung (Koordinaten)
-    [90, 180]    // Nordöstliche Begrenzung (Koordinaten)
+    [-90, -180],
+    [90, 180]
   ],
-  maxBoundsViscosity: 2.0 ,// Macht die Begrenzung 'klebrig'
+  maxBoundsViscosity: 2.0 ,
   minZoom: 3
 })
 const breitengradAnzeige = document.getElementById('breitengradAnzeige');
@@ -47,7 +46,6 @@ openStreatMap.addTo(map);
 
 function loadMap(){
   map.removeLayer(openStreatMap)
-  console.log("openStreatMap kurz removed")
   openStreatMap.addTo(map);
 }
 
@@ -63,7 +61,6 @@ function loadPoiItems(jumpBackToLastCurrentPoi){
     .then(data => {
       let lastCurrentPoi = null
       if(jumpBackToLastCurrentPoi){
-        console.log("Ich mache lastCurrent = current")
         lastCurrentPoi = currentPoi
       }else{
         lastCurrentPoi = null
@@ -82,7 +79,6 @@ function loadPoiItems(jumpBackToLastCurrentPoi){
         }
       })
       if(lastCurrentPoi != null){
-        console.log("und sollte dann hier rein springen")
         setCurrentPoi(lastCurrentPoi)
       }
     })
@@ -98,7 +94,6 @@ function isOrderOfPoisImportent(){
     credentials: "include",
   }).then(result => result.json())
     .then(data => {
-      console.log(data.fixed_order)
       if(data.fixed_order === 1){
         orderIsImportent = true
         setSwitchOn()
@@ -165,12 +160,8 @@ function addPoiToList(poi) {
 }
 
 function setCurrentPoi(poi) {
-  console.log("ich setze den currentPOI")
   const latitude = poi.databaseData.x_coordinate
   let longitude = poi.databaseData.y_coordinate
-
-  console.log(latitude)
-  console.log(longitude)
 
   currentPoi = poi
 
@@ -204,9 +195,7 @@ function changeBackgroundColorOfChosenListItem(poi){
 }
 
 function openMenue(){
-  if(markerMenuClassList.contains('visiblemarkerMenu')||markerMenuClassList.contains('editUseCaseMarkerMenuWithSidebar')){
-    console.log("menue is already visible")
-  }else {
+  if(!(markerMenuClassList.contains('visiblemarkerMenu')||markerMenuClassList.contains('editUseCaseMarkerMenuWithSidebar'))){
     if (editUseCaseSidebarClassList.contains('editUseCaseSidebarInvisible')) {
       markerMenuClassList.remove('markerMenu')
       markerMenuClassList.add('visiblemarkerMenu')
@@ -229,7 +218,6 @@ function clearListAndMap(){
 
 editUseCaseApplyChangesButton.addEventListener('click', function(){
   const name = editUseCaseNameInput.value
-  console.log(name)
   fetch(`http://localhost:3000/pois/${currentPoi.databaseData.id}`,{
     method:"PUT",
     credentials:"include",
@@ -331,7 +319,7 @@ editUseCaseNavbarSideBarManageButton.addEventListener('click', function(){
       markerMenuClassList.remove('visiblemarkerMenu')
       markerMenuClassList.add('editUseCaseMarkerMenuWithSidebar')
     } else {
-      console.log('in der Sidebar gab es einen Fehler')
+      console.error('in der Sidebar gab es einen Fehler')
     }
     editUseCaseSidebarClassList.remove('editUseCaseSidebarInvisible')
     editUseCaseSidebarClassList.add('editUseCaseSidebar')
@@ -339,14 +327,13 @@ editUseCaseNavbarSideBarManageButton.addEventListener('click', function(){
 })
 
 fromEditusecaseToUsecaseselectionButton.addEventListener("click",() => {
-  window.location.href = "../useCaseSelection/mainScreen.html";
+  window.location.href = "../useCaseSelection/useCaseSelection.html";
 })
 
 const toggleSwitch = document.getElementById('toggleSwitch');
 toggleSwitch.addEventListener('change', function() {
   orderIsImportent = this.checked;
   if (this.checked) {
-    console.log('Switch is ON');
     sendOrderToServer()
     fetch("http://localhost:3000/updateFixedOrderOfChosenUseCase", {
       method: "PUT",
@@ -357,7 +344,6 @@ toggleSwitch.addEventListener('change', function() {
       .then(data => console.log(data))
       .catch(error => console.error('Error:', error));
   } else {
-    console.log('Switch is OFF');
     fetch("http://localhost:3000/updateFixedOrderOfChosenUseCase", {
       method: "PUT",
       credentials: "include",
@@ -370,19 +356,17 @@ toggleSwitch.addEventListener('change', function() {
 });
 
 function setSwitchOn() {
-  console.log("toggleSwitch true")
   toggleSwitch.checked = true;
 }
 
 function setSwitchOff() {
-  console.log("toggleSwitch false")
   toggleSwitch.checked = false;
 }
 
 function sendOrderToServer() {
   const items = list.getElementsByTagName('li');
   const order = Array.from(items).map((item, index) => {
-    const poiId = item.querySelector('div').innerHTML.split('seperator')[1].trim(); // Assuming POI ID is in the div's innerHTML
+    const poiId = item.querySelector('div').innerHTML.split('seperator')[1].trim();
     return { id: poiId, order: index + 1 };
   });
 
@@ -398,7 +382,6 @@ function sendOrderToServer() {
 }
 
 function updatechosenSoundfileCurrentPoi(soundfile){
-  console.log("Ist das die richtige Soundfile zum updaten? " + soundfile.id)
   fetch(`http://localhost:3000/updatePoiSoundfile/${currentPoi.databaseData.id}`,{
     method: "PUT",
     credentials: 'include',
