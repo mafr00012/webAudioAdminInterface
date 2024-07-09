@@ -1,6 +1,6 @@
 const useCaseUpdateContainerClassList = document.getElementById("useCaseUpdateContainer").classList
 document.addEventListener("DOMContentLoaded", loadItems)
-const baseURL = BaseURL
+const baseURL = 'https://webaudio.uber.space/api/'
 
 function loadItems() {
   fetch(baseURL + "usecasesAdmin",{

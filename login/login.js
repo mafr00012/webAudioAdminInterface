@@ -1,7 +1,7 @@
   const loginButton = document.getElementById('loginButton');
   const username = document.getElementById('usernameLogin');
   const password = document.getElementById('passwordLogin');
-  const baseURL = BaseURL
+  const baseURL = 'https://webaudio.uber.space/api/'
 
   loginButton.addEventListener('click', function() {
     const usernameValue = username.value;

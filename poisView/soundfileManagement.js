@@ -1,6 +1,6 @@
 const dropZone = document.getElementById('drop-zone');
 let chosenSoundfileId = null
-const baseURL = BaseURL
+const baseURL = 'https://webaudio.uber.space/api/'
 dropZone.addEventListener('dragover', (e) => {
   e.preventDefault();
   dropZone.classList.add('dragover');
