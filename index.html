@@ -22,28 +22,7 @@
 </head>
 
 <body>
-  <script>
-    document.addEventListener("DOMContentLoaded", isLoggedIn)
-
-    function isLoggedIn() {
-      fetch('http://localhost:3000/loginAdmin', {
-        method:"POST",
-        credentials:"include",
-      })
-        .then(response => response.text())
-        .then(data => {
-          if(data === 'true'){
-            window.location.href = '../useCaseSelection/mainScreen.html'
-          } else {
-            window.location.href = "login/login.html";
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error)
-        })
-    }
-  </script>
-
+  <script src="./index/app.js"></script>
 </body>
 
 </html>

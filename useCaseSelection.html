@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>MainScreen</title>
-  <link rel="stylesheet" href="./useCaseSelection.css">
-  <link rel="stylesheet" href="../css/Navbar.css">
+  <link rel="stylesheet" href="./useCaseSelection/useCaseSelection.css">
+  <link rel="stylesheet" href="./css/Navbar.css">
 </head>
 <body>
   <div class="navBar">
@@ -36,10 +36,10 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src ="./useCaseSelection.js"></script>
+  <script src ="./useCaseSelection/useCaseSelection.js"></script>
   <script>
     function generateQRCode(number){
-      const url = 'http://mankam.ddns.net:4000';  //wird später durch uberspaceURL ersetzt
+      const url = BaseURL;
 
       const qr = qrcode(0, 'H');
       qr.addData(url);

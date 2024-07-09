@@ -1,6 +1,6 @@
 const dropZone = document.getElementById('drop-zone');
 let chosenSoundfileId = null
-
+const baseURL = BaseURL
 dropZone.addEventListener('dragover', (e) => {
   e.preventDefault();
   dropZone.classList.add('dragover');
@@ -18,7 +18,7 @@ dropZone.addEventListener('drop', (e) => {
   if (files.length > 0) {
     const formData = new FormData();
     formData.append('file', files[0]);
-    fetch("http://localhost:3000/soundfiles", {
+    fetch(baseURL + "soundfiles", {
       method:"POST",
       credentials:"include",
       body: formData
@@ -31,7 +31,7 @@ dropZone.addEventListener('drop', (e) => {
       })
       .catch(error => {
         console.error('Error:', error)
-        window.location.href = '../login/login.html'
+        window.location.href = '../login.html'
       })
   }
 });
@@ -42,7 +42,7 @@ const soundfileList = document.getElementById('soundfileList');
 const toggleSoundfileList = document.getElementById('toggleSoundfileList');
 
 function addSoundFileToList(soundfile){
-  const pathToSoundFile = `http://localhost:3000/soundfilesFile/${soundfile.filename}`
+  const pathToSoundFile = baseURL + `soundfilesFile/${soundfile.filename}`
   const item = document.createElement('div');
   item.className = 'soundfile-item';
 
@@ -100,7 +100,7 @@ toggleSoundfileList.addEventListener('click', function() {
 });
 
 function loadSoundfiles(){
-  fetch('http://localhost:3000/soundfiles', {
+  fetch(baseURL + 'soundfiles', {
     method: "GET",
     credentials: "include"
   }).then(response => response.json())
@@ -112,7 +112,7 @@ function loadSoundfiles(){
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../login/login.html'
+      window.location.href = '../login.html'
     })
 }
 

@@ -8,6 +8,7 @@ const map = L.map('map', {
   maxBoundsViscosity: 2.0 ,
   minZoom: 3
 })
+const baseURL = BaseURL
 const breitengradAnzeige = document.getElementById('breitengradAnzeige');
 const laengengradAnzeige = document.getElementById('laengengradAnzeige');
 const nameDisplay = document.getElementById('nameDisplay');
@@ -53,7 +54,7 @@ document.addEventListener("DOMContentLoaded", isOrderOfPoisImportent)
 
 function loadPoiItems(jumpBackToLastCurrentPoi){
   countOfPois = 0;
-  fetch("http://localhost:3000/pois",{
+  fetch( baseURL + "pois",{
     method:"GET",
     credentials:"include"
   })
@@ -84,12 +85,12 @@ function loadPoiItems(jumpBackToLastCurrentPoi){
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../login/login.html'
+      window.location.href = '../login.html'
     })
 }
 
 function isOrderOfPoisImportent(){
-  fetch("http://localhost:3000/chosenUseCase", {
+  fetch( baseURL + "chosenUseCase", {
     method: "GET",
     credentials: "include",
   }).then(result => result.json())
@@ -105,7 +106,7 @@ function isOrderOfPoisImportent(){
       }
     }).catch(error => {
     console.error('Error:', error)
-    window.location.href = '../login/login.html'
+    window.location.href = '../login.html'
   })
 }
 
@@ -115,7 +116,7 @@ function onMapClick(e) {
   if(longitude > 180 || longitude < -180){
     longitude = longitude % 180
   }
-  fetch("http://localhost:3000/pois",{
+  fetch(baseURL + "pois",{
     method:"POST",
     credentials:"include",
     headers:{'Content-Type':'application/json'},
@@ -129,7 +130,7 @@ function onMapClick(e) {
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../login/login.html'
+      window.location.href = '../login.html'
     })
 }
 
@@ -218,7 +219,7 @@ function clearListAndMap(){
 
 editUseCaseApplyChangesButton.addEventListener('click', function(){
   const name = editUseCaseNameInput.value
-  fetch(`http://localhost:3000/pois/${currentPoi.databaseData.id}`,{
+  fetch(baseURL + `pois/${currentPoi.databaseData.id}`,{
     method:"PUT",
     credentials:"include",
     headers:{'Content-Type':'application/json'},
@@ -232,7 +233,7 @@ editUseCaseApplyChangesButton.addEventListener('click', function(){
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../login/login.html'
+      window.location.href = '../login.html'
     })
 })
 
@@ -257,7 +258,7 @@ markerDeleteButton.addEventListener('click', function() {
   nameDisplay.textContent = "Name: "
   breitengradAnzeige.textContent = "Breitengrad: "
   laengengradAnzeige.textContent = "Längengrad: "
-  fetch(`http://localhost:3000/pois/${currentPoi.databaseData.id}`,{
+  fetch(baseURL + `pois/${currentPoi.databaseData.id}`,{
     method:"DELETE",
     credentials:"include",
   })
@@ -269,7 +270,7 @@ markerDeleteButton.addEventListener('click', function() {
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../login/login.html'
+      window.location.href = '../login.html'
     })
 })
 
@@ -327,7 +328,7 @@ editUseCaseNavbarSideBarManageButton.addEventListener('click', function(){
 })
 
 fromEditusecaseToUsecaseselectionButton.addEventListener("click",() => {
-  window.location.href = "../useCaseSelection/useCaseSelection.html";
+  window.location.href = "../useCaseSelection.html";
 })
 
 const toggleSwitch = document.getElementById('toggleSwitch');
@@ -335,7 +336,7 @@ toggleSwitch.addEventListener('change', function() {
   orderIsImportent = this.checked;
   if (this.checked) {
     sendOrderToServer()
-    fetch("http://localhost:3000/updateFixedOrderOfChosenUseCase", {
+    fetch(baseURL + "updateFixedOrderOfChosenUseCase", {
       method: "PUT",
       credentials: "include",
       headers: { 'Content-Type': 'application/json' },
@@ -344,7 +345,7 @@ toggleSwitch.addEventListener('change', function() {
       .then(data => console.log(data))
       .catch(error => console.error('Error:', error));
   } else {
-    fetch("http://localhost:3000/updateFixedOrderOfChosenUseCase", {
+    fetch(baseURL + "updateFixedOrderOfChosenUseCase", {
       method: "PUT",
       credentials: "include",
       headers: { 'Content-Type': 'application/json' },
@@ -370,7 +371,7 @@ function sendOrderToServer() {
     return { id: poiId, order: index + 1 };
   });
 
-  fetch('http://localhost:3000/updatePoiOrder', {
+  fetch(baseURL + 'updatePoiOrder', {
     method: 'PUT',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
@@ -382,7 +383,7 @@ function sendOrderToServer() {
 }
 
 function updatechosenSoundfileCurrentPoi(soundfile){
-  fetch(`http://localhost:3000/updatePoiSoundfile/${currentPoi.databaseData.id}`,{
+  fetch(baseURL + `updatePoiSoundfile/${currentPoi.databaseData.id}`,{
     method: "PUT",
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },

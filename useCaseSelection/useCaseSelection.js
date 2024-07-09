@@ -1,8 +1,9 @@
 const useCaseUpdateContainerClassList = document.getElementById("useCaseUpdateContainer").classList
 document.addEventListener("DOMContentLoaded", loadItems)
+const baseURL = BaseURL
 
 function loadItems() {
-  fetch("http://localhost:3000/usecasesAdmin",{
+  fetch(baseURL + "usecasesAdmin",{
     method:"GET",
     credentials:"include"
   })
@@ -14,7 +15,7 @@ function loadItems() {
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../login/login.html'
+      window.location.href = '../login.html'
     })
 }
 
@@ -32,7 +33,7 @@ function addItem(itemdata) {
   const deleteButton = div.querySelector('.listItemDeleteButton');
   deleteButton.addEventListener('click', () => {
     list.removeChild(listItem);
-    fetch(`http://localhost:3000/usecases/${itemdata.id}`,{
+    fetch(baseURL + `usecases/${itemdata.id}`,{
       method:"DELETE",
       credentials:"include"
     })
@@ -42,7 +43,7 @@ function addItem(itemdata) {
       })
       .catch(error => {
         console.error('Error:', error)
-        window.location.href = '../login/login.html'
+        window.location.href = '../login.html'
       })
   });
   const updateButton = div.querySelector('.useCaseUpdateButton');
@@ -70,7 +71,7 @@ function addItem(itemdata) {
         description = useCaseUpdateInputDescription.value
       }
 
-      fetch(`http://localhost:3000/usecases/${itemdata.id}`,{
+      fetch(baseURL + `usecases/${itemdata.id}`,{
         method:"PUT",
         credentials:"include",
         headers:{'Content-Type':'application/json'},
@@ -84,7 +85,7 @@ function addItem(itemdata) {
         })
         .catch(error => {
           console.error('Error:', error)
-          window.location.href = '../login/login.html'
+          window.location.href = '../login.html'
         })
     })
   })
@@ -92,7 +93,7 @@ function addItem(itemdata) {
 
 
 function openUseCase(data){
-  fetch("http://localhost:3000/chosenUseCase", {
+  fetch(baseURL + "chosenUseCase", {
     method: "POST",
     credentials: "include",
     headers:{'Content-Type':'application/json'},
@@ -100,14 +101,14 @@ function openUseCase(data){
   }).then(result => result.text())
     .then(data => {
       if(data === 'true'){
-        window.location.href = '../poisView/poisView.html'
+        window.location.href = '../poisView.html'
       }else{
         console.error("that didn't work")
       }
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../login/login.html'
+      window.location.href = '../login.html'
     })
 }
 
@@ -125,7 +126,7 @@ const addButton = document.getElementById('useCaseAddButton')
 addButton.addEventListener("click", function(){
   const titel = inputTitel.value
   const description = inputDescription.value
-  fetch('http://localhost:3000/usecasesAdmin', {
+  fetch(baseURL + 'usecasesAdmin', {
     method: "POST",
     credentials: "include",
     headers: {'Content-Type':'application/json'},
@@ -138,7 +139,7 @@ addButton.addEventListener("click", function(){
     })
     .catch(error => {
       console.error("Error", error)
-      window.location.href = '../login/login.html'
+      window.location.href = '../login.html'
     })
 })
 
@@ -150,12 +151,12 @@ function clearList(){
 const logoutButton = document.getElementById('logoutButton');
 
 logoutButton.addEventListener("click", function() {
-  fetch('http://localhost:3000/logout', {
+  fetch(baseURL + 'logout', {
     method:"GET",
   }).then(response => response.text())
     .then(data => {
       if(data === 'true'){
-        window.location.href = '../login/login.html'
+        window.location.href = '../login.html'
       }
     })
     .catch(error => {
