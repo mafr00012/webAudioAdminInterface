@@ -85,7 +85,7 @@ function loadPoiItems(jumpBackToLastCurrentPoi){
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../login.html'
+      window.location.href = '../../webAudioAdminInterface/login.html'
     })
 }
 
@@ -106,7 +106,7 @@ function isOrderOfPoisImportent(){
       }
     }).catch(error => {
     console.error('Error:', error)
-    window.location.href = '../login.html'
+    window.location.href = '../../webAudioAdminInterface/login.html'
   })
 }
 
@@ -130,7 +130,7 @@ function onMapClick(e) {
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../login.html'
+      window.location.href = '../../webAudioAdminInterface/login.html'
     })
 }
 
@@ -233,7 +233,7 @@ editUseCaseApplyChangesButton.addEventListener('click', function(){
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../login.html'
+      window.location.href = '../../webAudioAdminInterface/login.html'
     })
 })
 
@@ -270,7 +270,7 @@ markerDeleteButton.addEventListener('click', function() {
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../login.html'
+      window.location.href = '../../webAudioAdminInterface/login.html'
     })
 })
 
@@ -328,7 +328,7 @@ editUseCaseNavbarSideBarManageButton.addEventListener('click', function(){
 })
 
 fromEditusecaseToUsecaseselectionButton.addEventListener("click",() => {
-  window.location.href = "../useCaseSelection.html";
+  window.location.href = "../../webAudioAdminInterface/useCaseSelection.html";
 })
 
 const toggleSwitch = document.getElementById('toggleSwitch');

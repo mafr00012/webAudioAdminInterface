@@ -31,7 +31,7 @@ dropZone.addEventListener('drop', (e) => {
       })
       .catch(error => {
         console.error('Error:', error)
-        window.location.href = '../login.html'
+        window.location.href = '../../webAudioAdminInterface/login.html'
       })
   }
 });
@@ -112,7 +112,7 @@ function loadSoundfiles(){
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../login.html'
+      window.location.href = '../../webAudioAdminInterface/login.html'
     })
 }
 

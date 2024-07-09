@@ -15,7 +15,7 @@
       .then(response => response.text())
       .then(data => {
         if(data === 'true'){
-          window.location.href = '../useCaseSelection.html'
+          window.location.href = '../../webAudioAdminInterface/useCaseSelection.html'
         } else {
           console.error('Login failed:', data)
           alert('Login faild: '+ data)

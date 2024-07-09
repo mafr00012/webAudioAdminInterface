@@ -15,7 +15,7 @@ function loadItems() {
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../login.html'
+      window.location.href = '../../webAudioAdminInterface/login.html'
     })
 }
 
@@ -43,7 +43,7 @@ function addItem(itemdata) {
       })
       .catch(error => {
         console.error('Error:', error)
-        window.location.href = '../login.html'
+        window.location.href = '../../webAudioAdminInterface/login.html'
       })
   });
   const updateButton = div.querySelector('.useCaseUpdateButton');
@@ -85,7 +85,7 @@ function addItem(itemdata) {
         })
         .catch(error => {
           console.error('Error:', error)
-          window.location.href = '../login.html'
+          window.location.href = '../../webAudioAdminInterface/login.html'
         })
     })
   })
@@ -101,14 +101,14 @@ function openUseCase(data){
   }).then(result => result.text())
     .then(data => {
       if(data === 'true'){
-        window.location.href = '../poisView.html'
+        window.location.href = '../../webAudioAdminInterface/poisView.html'
       }else{
         console.error("that didn't work")
       }
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../login.html'
+      window.location.href = '../../webAudioAdminInterface/login.html'
     })
 }
 
@@ -139,7 +139,7 @@ addButton.addEventListener("click", function(){
     })
     .catch(error => {
       console.error("Error", error)
-      window.location.href = '../login.html'
+      window.location.href = '../../webAudioAdminInterface/login.html'
     })
 })
 
@@ -156,7 +156,7 @@ logoutButton.addEventListener("click", function() {
   }).then(response => response.text())
     .then(data => {
       if(data === 'true'){
-        window.location.href = '../login.html'
+        window.location.href = '../../webAudioAdminInterface/login.html'
       }
     })
     .catch(error => {
