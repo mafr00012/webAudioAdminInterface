@@ -9,9 +9,13 @@ function loadItems() {
   })
     .then(result => result.json())
     .then(data => {
-      data.forEach(value => {
+      if (data == null) {
+        console.log("noch keine Anwendungszwecke vorhanden")
+      } else {
+        data.forEach(value => {
         addItem(value)
-      })
+        })
+      }
     })
     .catch(error => {
       console.error('Error:', error)
