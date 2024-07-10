@@ -8,7 +8,7 @@ function loadItems() {
     credentials:"include"
   })
     .then(result => {
-      if(result.status === 500){
+      if(result === null){
         return null
       }
       return result.json();
