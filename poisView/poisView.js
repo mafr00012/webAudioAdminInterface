@@ -85,7 +85,10 @@ function loadPoiItems(jumpBackToLastCurrentPoi){
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../../webAudioAdminInterface/login.html'
+      const unauthorizedRegex = /.*Unauthorized.*/i
+      if(unauthorizedRegex.test(error.message)) {
+        window.location.href = '../../webAudioAdminInterface/login.html'
+      }
     })
 }
 
