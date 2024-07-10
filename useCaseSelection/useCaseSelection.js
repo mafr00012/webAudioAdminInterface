@@ -9,7 +9,7 @@ function loadItems() {
   })
     .then(result => result.json())
     .then(data => {
-      if (data == null) {
+      if (data === null || Array.isArray(data) && data.length === 0 || (typeof data === 'object' && Object.keys(data).length === 0)) {
         console.log("noch keine Anwendungszwecke vorhanden")
       } else {
         data.forEach(value => {
