@@ -7,7 +7,12 @@ function loadItems() {
     method:"GET",
     credentials:"include"
   })
-    .then(result => result.json())
+    .then(result => {
+      if(result.status === 500){
+        return null
+      }
+      return result.json();
+    })
     .then(data => {
       if (data === null || Array.isArray(data) && data.length === 0 || (typeof data === 'object' && Object.keys(data).length === 0)) {
         console.log("noch keine Anwendungszwecke vorhanden")
