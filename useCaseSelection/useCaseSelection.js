@@ -7,12 +7,7 @@ function loadItems() {
     method:"GET",
     credentials:"include"
   })
-    .then(result => {
-      if(result === null){
-        return null
-      }
-      return result.json();
-    })
+    .then(result => result.json())
     .then(data => {
       if (data === null || Array.isArray(data) && data.length === 0 || (typeof data === 'object' && Object.keys(data).length === 0)) {
         console.log("noch keine Anwendungszwecke vorhanden")
@@ -23,8 +18,11 @@ function loadItems() {
       }
     })
     .catch(error => {
+      const unauthorizedRegex = /.*Unauthorized.*/i
       console.error('Error:', error)
-      window.location.href = '../../webAudioAdminInterface/login.html'
+      if(unauthorizedRegex.test(error.message)) {
+        window.location.href = '../../webAudioAdminInterface/login.html'
+      }
     })
 }
 
