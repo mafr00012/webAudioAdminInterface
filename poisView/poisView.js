@@ -8,7 +8,7 @@ const map = L.map('map', {
   maxBoundsViscosity: 2.0 ,
   minZoom: 3
 })
-const baseURL = 'https://webaudio.uber.space/api/'
+const baseURL = 'http://localhost:3000/'
 const breitengradAnzeige = document.getElementById('breitengradAnzeige');
 const laengengradAnzeige = document.getElementById('laengengradAnzeige');
 const nameDisplay = document.getElementById('nameDisplay');

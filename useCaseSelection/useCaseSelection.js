@@ -1,6 +1,6 @@
 const useCaseUpdateContainerClassList = document.getElementById("useCaseUpdateContainer").classList
 document.addEventListener("DOMContentLoaded", loadItems)
-const baseURL = BaseURL
+const baseURL = 'http://localhost:3000/'
 
 function loadItems() {
   fetch(baseURL + "usecasesAdmin",{
@@ -9,13 +9,20 @@ function loadItems() {
   })
     .then(result => result.json())
     .then(data => {
-      data.forEach(value => {
+      if (data === null || Array.isArray(data) && data.length === 0 || (typeof data === 'object' && Object.keys(data).length === 0)) {
+        console.log("noch keine Anwendungszwecke vorhanden")
+      } else {
+        data.forEach(value => {
         addItem(value)
-      })
+        })
+      }
     })
     .catch(error => {
+      const unauthorizedRegex = /.*Unauthorized.*/i
       console.error('Error:', error)
-      window.location.href = '../login.html'
+      if(unauthorizedRegex.test(error.message)) {
+        window.location.href = '../login.html'
+      }
     })
 }
 

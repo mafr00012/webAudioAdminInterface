@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", isLoggedIn)
-const BaseURL = 'https://webaudio.uber.space/api/' //http://localhost:3000/
+const BaseURL =  'http://localhost:3000/'
 function isLoggedIn() {
   fetch(BaseURL + 'loginAdmin', {
     method:"POST",
