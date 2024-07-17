@@ -46,7 +46,7 @@ function addItem(itemdata) {
       })
       .catch(error => {
         console.error('Error:', error)
-        window.location.href = '../../webAudioAdminInterface/login.html'
+        window.location.href = '../../admin/login.html'
       })
   });
   const updateButton = div.querySelector('.useCaseUpdateButton');
@@ -88,7 +88,7 @@ function addItem(itemdata) {
         })
         .catch(error => {
           console.error('Error:', error)
-          window.location.href = '../../webAudioAdminInterface/login.html'
+          window.location.href = '../../admin/login.html'
         })
     })
   })
@@ -104,14 +104,14 @@ function openUseCase(data){
   }).then(result => result.text())
     .then(data => {
       if(data === 'true'){
-        window.location.href = '../../webAudioAdminInterface/poisView.html'
+        window.location.href = '../../admin/poisView.html'
       }else{
         console.error("that didn't work")
       }
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../../webAudioAdminInterface/login.html'
+      window.location.href = '../../admin/login.html'
     })
 }
 
@@ -142,7 +142,7 @@ addButton.addEventListener("click", function(){
     })
     .catch(error => {
       console.error("Error", error)
-      window.location.href = '../../webAudioAdminInterface/login.html'
+      window.location.href = '../../admin/login.html'
     })
 })
 
@@ -159,7 +159,7 @@ logoutButton.addEventListener("click", function() {
   }).then(response => response.text())
     .then(data => {
       if(data === 'true'){
-        window.location.href = '../../webAudioAdminInterface/login.html'
+        window.location.href = '../../admin/login.html'
       }
     })
     .catch(error => {

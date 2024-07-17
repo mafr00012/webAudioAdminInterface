@@ -8,9 +8,9 @@ function isLoggedIn() {
     .then(response => response.text())
     .then(data => {
       if(data === 'true'){
-        window.location.href = '../../webAudioAdminInterface/useCaseSelection/mainScreen.html'
+        window.location.href = '../../admin/useCaseSelection/mainScreen.html'
       } else {
-        window.location.href = "../../webAudioAdminInterface/login.html";
+        window.location.href = "../../admin/login.html";
       }
     })
     .catch(error => {

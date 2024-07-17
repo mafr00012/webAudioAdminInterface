@@ -128,7 +128,7 @@ function onMapClick(e) {
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../../webAudioAdminInterface/login.html'
+      window.location.href = '../../admin/login.html'
     })
 }
 
@@ -231,7 +231,7 @@ editUseCaseApplyChangesButton.addEventListener('click', function(){
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../../webAudioAdminInterface/login.html'
+      window.location.href = '../../admin/login.html'
     })
 })
 
@@ -268,7 +268,7 @@ markerDeleteButton.addEventListener('click', function() {
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../../webAudioAdminInterface/login.html'
+      window.location.href = '../../admin/login.html'
     })
 })
 
@@ -326,7 +326,7 @@ editUseCaseNavbarSideBarManageButton.addEventListener('click', function(){
 })
 
 fromEditusecaseToUsecaseselectionButton.addEventListener("click",() => {
-  window.location.href = "../../webAudioAdminInterface/useCaseSelection.html";
+  window.location.href = "../../admin/useCaseSelection.html";
 })
 
 const toggleSwitch = document.getElementById('toggleSwitch');
@@ -428,7 +428,7 @@ dropZone.addEventListener('drop', (e) => {
       })
       .catch(error => {
         console.error('Error:', error)
-        window.location.href = '../../webAudioAdminInterface/login.html'
+        window.location.href = '../../admin/login.html'
       })
   }
 });
@@ -509,6 +509,6 @@ function loadSoundfiles(){
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../../webAudioAdminInterface/login.html'
+      window.location.href = '../../admin/login.html'
     })
 }
