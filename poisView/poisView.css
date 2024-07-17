@@ -1,9 +1,7 @@
 .mainContainer{
-  position: relative;
-  height: 69%;
+  height: 96vh;
   width: 100%;
   padding-top: 4vh;
-  pointer-events: none;
 }
 .fullMap {
   height: 96vh;
@@ -127,10 +125,6 @@
 .drop-zone.dragover {
   border-color: #333;
   color: #333;
-}
-
-#editUseCaseNameInput{
-
 }
 
 #editUseCaseSidebarOrderParagraph {
