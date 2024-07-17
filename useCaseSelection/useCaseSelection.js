@@ -18,11 +18,7 @@ function loadItems() {
       }
     })
     .catch(error => {
-      const unauthorizedRegex = /.*Unauthorized.*/i
       console.error('Error:', error)
-      if(unauthorizedRegex.test(error.message)) {
-        window.location.href = '../login.html'
-      }
     })
 }
 

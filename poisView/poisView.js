@@ -85,10 +85,6 @@ function loadPoiItems(jumpBackToLastCurrentPoi){
     })
     .catch(error => {
       console.error('Error:', error)
-      const unauthorizedRegex = /.*Unauthorized.*/i
-      if(unauthorizedRegex.test(error.message)) {
-        window.location.href = '../login.html'
-      }
     })
 }
 
@@ -109,7 +105,6 @@ function isOrderOfPoisImportent(){
       }
     }).catch(error => {
     console.error('Error:', error)
-    window.location.href = '../login.html'
   })
 }
 
@@ -493,7 +488,7 @@ toggleSoundfileList.addEventListener('click', function() {
   if (soundfileList.style.display === 'none') {
     soundfileList.style.display = 'block';
     dropZone.style.display = 'none';
-    toggleSoundfileList.textContent = 'MP3 hinzufügen';
+    toggleSoundfileList.textContent = 'MP3 zu Liste hinzufügen';
   } else {
     soundfileList.style.display = 'none';
     dropZone.style.display = 'block';
