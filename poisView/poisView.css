@@ -1,12 +1,8 @@
-#editUseCaseNavbarSideBarManageButton{
-  position: fixed;
-  left: 16.8vw;
-  margin: 1vh;
-}
 .mainContainer{
+  position: relative;
   height: 69%;
   width: 100%;
-  margin-top: 4vh;
+  padding-top: 4vh;
 }
 .fullMap {
   height: 96vh;
@@ -44,11 +40,12 @@
   display: none;
   width: 0;
 }
+
 #editUseCaseSidebarListOfPOI{
-  height: 93vh;
-  margin-top:1vh;
+  height: 89vh;
+  top: -25px;
   overflow-y: auto;
-  border: 1px solid black;
+  position: relative;
 }
 .markerMenu{
   display: none;
@@ -61,6 +58,7 @@
   width: 100%;
   right: 0;
   bottom: 0;
+  background-color: white;
 }
 .editUseCaseMarkerMenuWithSidebar{
   border-top: 1px solid black;
@@ -69,20 +67,23 @@
   position: fixed;
   right: 0;
   bottom: 0;
+  background-color: white;
 }
 #markerMenuCloseButton{
   margin-top: 3px;
   float: right;
+  background-color: transparent;
+  border-color: black;
 }
 #markerLoeschenButton{
-  position: absolute;
+  position: relative;
   margin-top: 3px;
-  right: 50%;
+  left: 40vw;
 }
 #bearbeitungsModusButton{
-  position: absolute;
+  position: relative;
   margin-top: 3px;
-  right: 30%;
+  left: 50vw;
 }
 .markerDatenBearbeitungsmodus{
   display: none;
@@ -90,16 +91,18 @@
 .markerDatenBearbeitungsmodusVisible{
   width: 50%;
   border: 1px solid black;
-  float: right;
-  margin-top: 2%;
+  margin-top: 10px;
+  left: 20vw;
   height: 85%;
+  position: relative;
 }
 .markerDatenAnzeige{
   width: 50%;
   border: 1px solid black;
-  float: right;
-  margin-top: 2%;
+  margin-top: 10px;
+  left: 20vw;
   height: 85%;
+  position: relative;
 }
 .markerDatenAnzeigeInvisible{
   display: none;
@@ -125,13 +128,24 @@
   color: #333;
 }
 
+#editUseCaseNameInput{
+
+}
+
+#editUseCaseSidebarOrderParagraph {
+  position: relative;
+  left: 10px;
+  top: 5px;
+  width: 60%;
+}
+
 .switch {
-  position: absolute;
+  position: relative;
   display: inline-block;
-  width: 2vw;
-  height: 2vh;
-  right: 1vw;
-  top: 0.75vh;
+  width: 34px;
+  height: 20px;
+  left: 17vw;
+  top: -30px;
 }
 
 .switch input {
@@ -155,10 +169,10 @@
 .slider:before {
   position: absolute;
   content: "";
-  height: 1.5vh;
-  width: 0.75vw;
+  height: 16px;
+  width: 16px;
   left: 2px;
-  bottom: 0.25vh;
+  bottom: 2px;
   background-color: white;
   transition: .4s;
   border-radius: 50%;
@@ -169,7 +183,7 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-  transform: translateX(1vw);
+  transform: translateX(15px);
 }
 
 .sortable-list {
@@ -182,4 +196,15 @@ input:checked + .slider:before {
   background-color: #f0f0f0;
   border: 1px solid #ccc;
   cursor: grab;
+}
+
+#toggleSoundfileList{
+  margin-left: 20vw;
+  width: 150px;
+}
+
+body{
+  height: 100%;
+  width: 100%;
+  margin: 0;
 }

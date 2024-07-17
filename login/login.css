@@ -1,19 +1,24 @@
 .Login-container {
-  padding-left: 45vw;
-  padding-top: 30vh;
-  width: 11vw;
+  left: 45vw;
+  top: 30vh;
+  width: 10%;
   display: flex;
+  position: absolute;
   flex-direction: column;
 }
 .Login-container input {
   margin-bottom: 10px;
 }
 #loginButton{
-  margin-left: 3vw;
-  width: 5vw;
+  margin-left: 25%;
+  width: 50%;
 }
-#KontoErstellenLink{
-  margin-left: 3vw;
-  margin-top: 2vh;
-  color: blue;
+body {
+  background-image: url('./LoginBackground.jpeg');
+  background-size: cover;
+  background-position-y: 40%;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  margin: 0;
 }

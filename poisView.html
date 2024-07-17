@@ -25,8 +25,8 @@
     <div id="markerDatenBearbeitungsmodus" class="markerDatenBearbeitungsmodus">
       <p>Name:</p>
       <input id="editUseCaseNameInput" type="text">
-      <button id="editUseCaseApplyChangesButton">Änderungen übernehmen</button>
-      <button id="toggleSoundfileList">MP3 hinzufügen</button>
+      <button id="editUseCaseApplyChangesButton">Name ändern</button>
+      <button id="toggleSoundfileList">MP3 zu Liste hinzufügen</button>
       <div class="soundfile-list" id="soundfileList"></div>
       <div class="drop-zone" id="drop-zone">
         Ziehe eine Datei hierher
@@ -39,13 +39,12 @@
     </div>
   </div>
   <div id="editUseCaseSidebar" class="editUseCaseSidebar">
+    <p id="editUseCaseSidebarOrderParagraph">Feste Ablaufreihenfolge festlegen:</p>
     <label class="switch">
       <input type="checkbox" id="toggleSwitch">
       <span id="slider round" class="slider round"></span>
     </label>
-    <div id="editUseCaseSidebarListScrollContainer">
-      <ul id="editUseCaseSidebarListOfPOI"></ul>
-    </div>
+    <ul id="editUseCaseSidebarListOfPOI"></ul>
   </div>
 </div>
 

@@ -1,40 +1,81 @@
 .mainContainer{
-  height: 69%;
+  padding-top: 4vh;
   width: 100%;
-  margin-top: 4vh;
+  height: 96vh;
 }
 #useCaseListScrollContainer{
-  position: fixed;
+  position: absolute;
   top: 6vh;
-  left: 40vw;
-  width: 30vw;
+  left: 35vw;
+  width: 30%;
   border: 1px solid black;
   overflow: auto;
   height: 92vh;
 }
 #useCaseAddButton{
-  position: absolute;
-  top: 20vh;
+  position: relative;
+  margin-top: 20px;
+  width: 75px;
+  margin-left: 30%;
 }
-#useCaseAddContainer{
-  position: fixed;
-  height: 50vh;
-  width: 20vw;
-  left: 15vw;
-  top: 19vh;
+.useCaseAddContainer{
+  position: relative;
+  height: 30%;
+  width: 10%;
+  left: 12.5vw;
+  top: 30vh;
 }
+#useCaseAddContainerHeading{
+  position: relative;
+}
+.useCaseAddContainer p{
+  position: relative;
+  top: 10px;
+}
+
 .useCaseUpdateContainer{
   display: none;
 }
 .useCaseUpdateContainerVisible{
-  position: fixed;
-  right: 10vw;
-  top: 19vh;
+  position: relative;
+  width: 12%;
+  left: 78.5vw;
+  height: 30%;
+  top: -2vh;
 }
+
+#useCaseUpdateCloseButton{
+  position: absolute;
+  right: 0;
+  background-color: transparent;
+  border-color: black;
+}
+#useCaseUpdateContainerHeading{
+  position: relative;
+  top: 25px;
+  margin-bottom: 15px;
+}
+.useCaseUpdateContainerVisible p{
+  top: 20px;
+  position: relative;
+}
+.useCaseUpdateContainerVisible input{
+  margin-top: 15px;
+}
+#useCaseUpdateAddButton{
+  position: relative;
+  width: 75px;
+  margin-left: 30%;
+  top: 20px
+}
+
 
 body {
   background-image: url('weißesMusterBackground.jpg');
   background-size: cover;
   background-position: left 0;
   background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  margin: 0;
 }

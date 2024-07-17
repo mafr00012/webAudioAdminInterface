@@ -85,10 +85,6 @@ function loadPoiItems(jumpBackToLastCurrentPoi){
     })
     .catch(error => {
       console.error('Error:', error)
-      const unauthorizedRegex = /.*Unauthorized.*/i
-      if(unauthorizedRegex.test(error.message)) {
-        window.location.href = '../../webAudioAdminInterface/login.html'
-      }
     })
 }
 
@@ -109,7 +105,6 @@ function isOrderOfPoisImportent(){
       }
     }).catch(error => {
     console.error('Error:', error)
-    window.location.href = '../../webAudioAdminInterface/login.html'
   })
 }
 
@@ -174,7 +169,7 @@ function setCurrentPoi(poi) {
   laengengradAnzeige.textContent = `Längengrad: ${longitude}`
   if(bearbeitungsModusAktiv){
     editUseCaseNameInput.value = poi.databaseData.name
-    setChosenSoundfileId(poi.databaseData.soundfile_id)
+    chosenSoundfileId = poi.databaseData.soundfile_id
     loadSoundfiles()
   }
 
@@ -285,7 +280,7 @@ bearbeitungsModusButton.addEventListener('click', function(){
     markerDatenBearbeitungsmodusClassList.add('markerDatenBearbeitungsmodusVisible');
     bearbeitungsModusAktiv = true;
     editUseCaseNameInput.value = currentPoi.databaseData.name
-    setChosenSoundfileId(currentPoi.databaseData.soundfile_id)
+    chosenSoundfileId = currentPoi.databaseData.soundfile_id
     loadSoundfiles()
   }else{
     markerDatenBearbeitungsmodusClassList.remove('markerDatenBearbeitungsmodusVisible');
@@ -395,7 +390,7 @@ function updatechosenSoundfileCurrentPoi(soundfile){
     .then(response => response.text())
     .then(data => {
       console.log(data)
-      setChosenSoundfileId(soundfile.id)
+      chosenSoundfileId = soundfile.id
       loadSoundfiles()
     })
     .catch(error => console.error('Error:', error));
@@ -493,7 +488,7 @@ toggleSoundfileList.addEventListener('click', function() {
   if (soundfileList.style.display === 'none') {
     soundfileList.style.display = 'block';
     dropZone.style.display = 'none';
-    toggleSoundfileList.textContent = 'MP3 hinzufügen';
+    toggleSoundfileList.textContent = 'MP3 zu Liste hinzufügen';
   } else {
     soundfileList.style.display = 'none';
     dropZone.style.display = 'block';
@@ -516,8 +511,4 @@ function loadSoundfiles(){
       console.error('Error:', error)
       window.location.href = '../../webAudioAdminInterface/login.html'
     })
-}
-
-function setChosenSoundfileId(soundfileId){
-  chosenSoundfileId = soundfileId
 }

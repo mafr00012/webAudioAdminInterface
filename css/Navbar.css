@@ -1,13 +1,20 @@
 .navBar{
-  top: 0;
-  left: 0;
   position: fixed;
   height: 4vh;
   width: 100%;
-  background-color: cornflowerblue;
+  background-color: darkgray;
+}
+.navBar button{
+  background-color: transparent;
+  border-color: black;
 }
 .backbutton{
-  position: fixed;
-  left: 1vh;
+  position: relative;
   margin: 1vh;
 }
+#editUseCaseNavbarSideBarManageButton{
+  position: relative;
+  left: 13vw;
+  margin: 1vh;
+}
+
