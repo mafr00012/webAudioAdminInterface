@@ -3,6 +3,7 @@
   height: 69%;
   width: 100%;
   padding-top: 4vh;
+  pointer-events: none;
 }
 .fullMap {
   height: 96vh;

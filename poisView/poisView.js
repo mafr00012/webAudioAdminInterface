@@ -325,7 +325,7 @@ editUseCaseNavbarSideBarManageButton.addEventListener('click', function(){
   }
 })
 
-fromEditusecaseToUsecaseselectionButton.addEventListener("click",() => {
+fromEditusecaseToUsecaseselectionButton.addEventListener("click", function() {
   window.location.href = "../../admin/useCaseSelection.html";
 })
 
