@@ -1,6 +1,6 @@
+import {baseURL, loginHtmlPath, poisViewHTMLPath} from "../index/app";
 const useCaseUpdateContainerClassList = document.getElementById("useCaseUpdateContainer").classList
 document.addEventListener("DOMContentLoaded", loadItems)
-const baseURL = 'https://webaudio.uber.space/api/'
 
 function loadItems() {
   fetch(baseURL + "usecasesAdmin",{
@@ -46,7 +46,7 @@ function addItem(itemdata) {
       })
       .catch(error => {
         console.error('Error:', error)
-        window.location.href = '../../admin/login.html'
+        window.location.href = loginHtmlPath
       })
   });
   const updateButton = div.querySelector('.useCaseUpdateButton');
@@ -88,7 +88,7 @@ function addItem(itemdata) {
         })
         .catch(error => {
           console.error('Error:', error)
-          window.location.href = '../../admin/login.html'
+          window.location.href = loginHtmlPath
         })
     })
   })
@@ -104,14 +104,14 @@ function openUseCase(data){
   }).then(result => result.text())
     .then(data => {
       if(data === 'true'){
-        window.location.href = '../../admin/poisView.html'
+        window.location.href = poisViewHTMLPath
       }else{
         console.error("that didn't work")
       }
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../../admin/login.html'
+      window.location.href = loginHtmlPath
     })
 }
 
@@ -142,7 +142,7 @@ addButton.addEventListener("click", function(){
     })
     .catch(error => {
       console.error("Error", error)
-      window.location.href = '../../admin/login.html'
+      window.location.href = loginHtmlPath
     })
 })
 
@@ -159,7 +159,7 @@ logoutButton.addEventListener("click", function() {
   }).then(response => response.text())
     .then(data => {
       if(data === 'true'){
-        window.location.href = '../../admin/login.html'
+        window.location.href = loginHtmlPath
       }
     })
     .catch(error => {

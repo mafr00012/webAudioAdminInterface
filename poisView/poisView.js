@@ -1,3 +1,4 @@
+import {baseURL, loginHtmlPath, useCaseSelectionHTMLPath} from "../index/app";
 const map = L.map('map', {
   center: [0, 0],
   zoom: 3,
@@ -8,7 +9,6 @@ const map = L.map('map', {
   maxBoundsViscosity: 2.0 ,
   minZoom: 3
 })
-const baseURL = 'https://webaudio.uber.space/api/'
 const breitengradAnzeige = document.getElementById('breitengradAnzeige');
 const laengengradAnzeige = document.getElementById('laengengradAnzeige');
 const nameDisplay = document.getElementById('nameDisplay');
@@ -128,7 +128,7 @@ function onMapClick(e) {
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../../admin/login.html'
+      window.location.href = loginHtmlPath
     })
 }
 
@@ -221,7 +221,9 @@ editUseCaseApplyChangesButton.addEventListener('click', function(){
     method:"PUT",
     credentials:"include",
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({order: currentPoi.databaseData.order, x_coordinate: currentPoi.databaseData.x_coordinate, y_coordinate: currentPoi.databaseData.y_coordinate, soundfile_id: currentPoi.databaseData.soundfile_id, usecase_id: currentPoi.databaseData.usecase_id, name: name}),
+    body:JSON.stringify({order: currentPoi.databaseData.order, x_coordinate: currentPoi.databaseData.x_coordinate,
+      y_coordinate: currentPoi.databaseData.y_coordinate, soundfile_id: currentPoi.databaseData.soundfile_id,
+      usecase_id: currentPoi.databaseData.usecase_id, name: name}),
   })
     .then(result => result.text())
     .then(data => {
@@ -231,7 +233,7 @@ editUseCaseApplyChangesButton.addEventListener('click', function(){
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../../admin/login.html'
+      window.location.href = loginHtmlPath
     })
 })
 
@@ -268,7 +270,7 @@ markerDeleteButton.addEventListener('click', function() {
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../../admin/login.html'
+      window.location.href = loginHtmlPath
     })
 })
 
@@ -326,7 +328,7 @@ editUseCaseNavbarSideBarManageButton.addEventListener('click', function(){
 })
 
 fromEditusecaseToUsecaseselectionButton.addEventListener("click", function() {
-  window.location.href = "../../admin/useCaseSelection.html";
+  window.location.href = useCaseSelectionHTMLPath;
 })
 
 const toggleSwitch = document.getElementById('toggleSwitch');
@@ -428,7 +430,7 @@ dropZone.addEventListener('drop', (e) => {
       })
       .catch(error => {
         console.error('Error:', error)
-        window.location.href = '../../admin/login.html'
+        window.location.href = loginHtmlPath
       })
   }
 });
@@ -509,6 +511,6 @@ function loadSoundfiles(){
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = '../../admin/login.html'
+      window.location.href = loginHtmlPath
     })
 }

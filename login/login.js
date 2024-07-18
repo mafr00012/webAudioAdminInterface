@@ -1,7 +1,7 @@
+  import {baseURL, useCaseSelectionHTMLPath} from "../index/app";
   const loginButton = document.getElementById('loginButton');
   const username = document.getElementById('usernameLogin');
   const password = document.getElementById('passwordLogin');
-  const baseURL = 'https://webaudio.uber.space/api/'
 
   loginButton.addEventListener('click', function() {
     const usernameValue = username.value;
@@ -15,7 +15,7 @@
       .then(response => response.text())
       .then(data => {
         if(data === 'true'){
-          window.location.href = '../../admin/useCaseSelection.html'
+          window.location.href = useCaseSelectionHTMLPath
         } else {
           console.error('Login failed:', data)
           alert('Login faild: '+ data)
