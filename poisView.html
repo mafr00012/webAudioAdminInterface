@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="de" xmlns="http://www.w3.org/1999/html">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anwendungszweckbetrachtung</title>
+  <title>Audiopunkte</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <link rel="stylesheet" href="./poisView/poisView.css">
+  <link rel="stylesheet" href="./css/poisView.css">
   <link rel="stylesheet" href="./css/Navbar.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-  <link rel="stylesheet" href="./poisView/sortableList.css">
-  <link rel="stylesheet" href="./poisView/soundfileManagement.css">
+  <link rel="stylesheet" href="./css/soundfileManagement.css">
 </head>
 <body>
 <div class="navBar">
@@ -49,8 +48,7 @@
 </div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="./poisView/poisView.js"></script>
-<script src="./poisView/soundfileManagement.js"></script>
+<script type="module" src="./js/poisView.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
 <script>
   new Sortable(document.getElementById('editUseCaseSidebarListOfPOI'), {

@@ -1,6 +1,54 @@
-import {baseURL, loginHtmlPath, poisViewHTMLPath} from "../index/app";
-const useCaseUpdateContainerClassList = document.getElementById("useCaseUpdateContainer").classList
+import {baseURL, loginHtmlPath, poisViewHTMLPath} from "./app";
+
+const useCaseUpdateContainerClassList = document.getElementById("useCaseUpdateContainer").classList;
+const useCaseUpdateCloseButton = document.getElementById("useCaseUpdateCloseButton");
+const inputTitel = document.getElementById('useCaseInputTitel');
+const inputDescription = document.getElementById('useCaseInputDescription');
+const addButton = document.getElementById('useCaseAddButton');
+const logoutButton = document.getElementById('logoutButton');
+
 document.addEventListener("DOMContentLoaded", loadItems)
+
+useCaseUpdateCloseButton.addEventListener("click", function(){
+  if(useCaseUpdateContainerClassList.contains("useCaseUpdateContainerVisible")){
+    useCaseUpdateContainerClassList.remove("useCaseUpdateContainerVisible")
+    useCaseUpdateContainerClassList.add("useCaseUpdateContainer")
+  }
+})
+
+addButton.addEventListener("click", function(){
+  const titel = inputTitel.value;
+  const description = inputDescription.value;
+  fetch(baseURL + 'usecasesAdmin', {
+    method: "POST",
+    credentials: "include",
+    headers: {'Content-Type':'application/json'},
+    body:JSON.stringify({titel, beschreibung: description})
+  }).then(result => result.text())
+    .then(data => {
+      console.log(data)
+      clearList()
+      loadItems()
+    })
+    .catch(error => {
+      console.error("Error", error)
+      window.location.href = loginHtmlPath
+    })
+})
+
+logoutButton.addEventListener("click", function() {
+  fetch(baseURL + 'logout', {
+    method:"GET",
+  }).then(response => response.text())
+    .then(data => {
+      if(data === 'true'){
+        window.location.href = loginHtmlPath
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error)
+    })
+})
 
 function loadItems() {
   fetch(baseURL + "usecasesAdmin",{
@@ -21,7 +69,6 @@ function loadItems() {
       console.error('Error:', error)
     })
 }
-
 
 function addItem(itemdata) {
   const list = document.getElementById('dynamicList');
@@ -115,54 +162,7 @@ function openUseCase(data){
     })
 }
 
-const useCaseUpdateCloseButton = document.getElementById("useCaseUpdateCloseButton")
-useCaseUpdateCloseButton.addEventListener("click", function(){
-  if(useCaseUpdateContainerClassList.contains("useCaseUpdateContainerVisible")){
-    useCaseUpdateContainerClassList.remove("useCaseUpdateContainerVisible")
-    useCaseUpdateContainerClassList.add("useCaseUpdateContainer")
-  }
-})
-
-const inputTitel = document.getElementById('useCaseInputTitel');
-const inputDescription = document.getElementById('useCaseInputDescription')
-const addButton = document.getElementById('useCaseAddButton')
-addButton.addEventListener("click", function(){
-  const titel = inputTitel.value
-  const description = inputDescription.value
-  fetch(baseURL + 'usecasesAdmin', {
-    method: "POST",
-    credentials: "include",
-    headers: {'Content-Type':'application/json'},
-    body:JSON.stringify({titel, beschreibung: description})
-  }).then(result => result.text())
-    .then(data => {
-      console.log(data)
-      clearList()
-      loadItems()
-    })
-    .catch(error => {
-      console.error("Error", error)
-      window.location.href = loginHtmlPath
-    })
-})
-
 function clearList(){
   const list = document.getElementById('dynamicList');
   list.innerHTML = '';
 }
-
-const logoutButton = document.getElementById('logoutButton');
-
-logoutButton.addEventListener("click", function() {
-  fetch(baseURL + 'logout', {
-    method:"GET",
-  }).then(response => response.text())
-    .then(data => {
-      if(data === 'true'){
-        window.location.href = loginHtmlPath
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error)
-    })
-})
