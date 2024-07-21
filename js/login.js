@@ -1,4 +1,4 @@
-  import {baseURL, useCaseSelectionHTMLPath} from "./app";
+  import {baseURL, useCaseSelectionHTMLPath} from "./app.js";
 
   const loginButton = document.getElementById('loginButton');
   const username = document.getElementById('usernameLogin');

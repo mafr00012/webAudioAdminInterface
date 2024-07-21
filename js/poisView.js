@@ -1,4 +1,4 @@
-import {baseURL, loginHtmlPath, useCaseSelectionHTMLPath} from "../index/app";
+import {baseURL, loginHtmlPath, useCaseSelectionHTMLPath} from "./app.js";
 
 const map = L.map('map', {
   center: [0, 0],

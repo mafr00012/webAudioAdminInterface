@@ -1,6 +1,6 @@
 export const baseURL = 'https://webaudio.uber.space/api/' //http://localhost:3000/
 export const loginHtmlPath = "../../admin/login.html"
-export const useCaseSelectionHTMLPath = '../../admin/useCaseSelection/mainScreen.html'
+export const useCaseSelectionHTMLPath = '../../admin/useCaseSelection.html'
 export const poisViewHTMLPath = '../../admin/poisView.html'
 
 

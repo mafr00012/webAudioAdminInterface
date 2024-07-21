@@ -1,4 +1,4 @@
-import {baseURL, loginHtmlPath, poisViewHTMLPath} from "./app";
+import {baseURL, loginHtmlPath, poisViewHTMLPath} from "./app.js";
 
 const useCaseUpdateContainerClassList = document.getElementById("useCaseUpdateContainer").classList;
 const useCaseUpdateCloseButton = document.getElementById("useCaseUpdateCloseButton");
