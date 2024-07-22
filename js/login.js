@@ -1,9 +1,10 @@
-  import {baseURL, useCaseSelectionHTMLPath} from "./app.js";
+  import {baseURL, loginHtmlPath, useCaseSelectionHTMLPath, isLoggedIn} from "./app.js";
 
   const loginButton = document.getElementById('loginButton');
   const username = document.getElementById('usernameLogin');
   const password = document.getElementById('passwordLogin');
 
+  document.addEventListener("DOMContentLoaded", isLoggedIn)
 
   loginButton.addEventListener('click', function() {
     const usernameValue = username.value;

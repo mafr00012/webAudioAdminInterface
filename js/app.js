@@ -6,9 +6,10 @@ export const poisViewHTMLPath = '../../admin/poisView.html'
 
 document.addEventListener("DOMContentLoaded", isLoggedIn)
 
-function isLoggedIn() {
-  fetch(baseURL + 'loginAdmin', {
-    method:"POST",
+export function isLoggedIn() {
+  fetch(baseURL + 'isAlreadyLoggedin', {
+    method:"GET",
+    headers:{'Content-Type':'application/json'},
     credentials:"include",
   })
     .then(response => response.text())
