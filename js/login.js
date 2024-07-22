@@ -1,4 +1,4 @@
-  import {baseURL, loginHtmlPath, useCaseSelectionHTMLPath, isLoggedIn} from "./app.js";
+  import {baseURL, useCaseSelectionHTMLPath} from "./app.js";
 
   const loginButton = document.getElementById('loginButton');
   const username = document.getElementById('usernameLogin');
@@ -29,3 +29,19 @@
       })
   })
 
+  function isLoggedIn() {
+    fetch(baseURL + 'isAlreadyLoggedin', {
+      method:"GET",
+      headers:{'Content-Type':'application/json'},
+      credentials:"include",
+    })
+      .then(response => response.text())
+      .then(data => {
+        if(data === 'true'){
+          window.location.href = useCaseSelectionHTMLPath;
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error)
+      })
+  }
