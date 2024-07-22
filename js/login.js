@@ -19,17 +19,21 @@
       .then(data => {
         if(data === 'true'){
           window.location.href = useCaseSelectionHTMLPath
+        } else if(data === 'false'){
+          console.error('Login failed')
+          alert('Benutzername und Passwort passen nicht zusammen');
         } else {
-          console.error('Login failed:', data)
-          alert('Login faild: '+ data)
+          console.error('Unexpected response:', data);
+          alert('Unerwartete Antwort vom Server');
         }
       })
       .catch(error => {
         console.error('Error:', error)
+        alert("Unerwartete Antwort vom Server");
       })
   })
 
-  function isLoggedIn() {
+  async function isLoggedIn() {
     fetch(baseURL + 'isAlreadyLoggedin', {
       method:"GET",
       headers:{'Content-Type':'application/json'},
@@ -39,9 +43,15 @@
       .then(data => {
         if(data === 'true'){
           window.location.href = useCaseSelectionHTMLPath;
+        } else if(data === 'false'){
+          // User is not logged in, no action needed
+        } else {
+          console.error('Unexpected response:', data);
+          alert('Unerwartete Antwort vom Server');
         }
       })
       .catch(error => {
         console.error('Error:', error)
+        alert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
       })
   }
