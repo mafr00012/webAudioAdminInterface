@@ -92,7 +92,7 @@
   border: 1px solid black;
   margin-top: 10px;
   left: 20vw;
-  height: 85%;
+  height: 85vh;
   position: relative;
 }
 .markerDatenAnzeige{
@@ -100,7 +100,7 @@
   border: 1px solid black;
   margin-top: 10px;
   left: 20vw;
-  height: 85%;
+  height: 85vh;
   position: relative;
 }
 .markerDatenAnzeigeInvisible{
