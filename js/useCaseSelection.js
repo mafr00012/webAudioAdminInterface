@@ -75,17 +75,23 @@ function addItem(itemdata) {
   const listItem = document.createElement('li');
   const div = document.createElement('div');
   div.className = 'list-item';
-  div.innerHTML = `<h2>${itemdata.titel}</h2><p>${itemdata.beschreibung}</p><button onclick="openUseCase(${itemdata.id})">Öffnen</button><button class="listItemDeleteButton">Löschen</button>
-    <button class="useCaseUpdateButton">Bearbeiten</button> <button onclick="generateQRCode(${itemdata.id})">QR-Code herunterladen</button>`;
+  div.innerHTML = `<h2>${itemdata.titel}</h2><p>${itemdata.beschreibung}</p>
+    <button class="openUseCaseButton">Öffnen</button>
+    <button class="listItemDeleteButton">Löschen</button>
+    <button class="useCaseUpdateButton">Bearbeiten</button>
+    <button class="generateQRCodeButton">QR-Code herunterladen</button>`;
   listItem.appendChild(div);
   list.appendChild(listItem);
+
+  const openUseCaseButton = div.querySelector('.openUseCaseButton');
+  openUseCaseButton.addEventListener('click', () => openUseCase(itemdata.id));
 
   const deleteButton = div.querySelector('.listItemDeleteButton');
   deleteButton.addEventListener('click', () => {
     list.removeChild(listItem);
-    fetch(baseURL + `usecases/${itemdata.id}`,{
-      method:"DELETE",
-      credentials:"include"
+    fetch(baseURL + `usecases/${itemdata.id}`, {
+      method: "DELETE",
+      credentials: "include"
     })
       .then(result => result.text())
       .then(data => {
@@ -94,52 +100,58 @@ function addItem(itemdata) {
       .catch(error => {
         console.error('Error:', error)
         window.location.href = loginHtmlPath
-      })
+      });
   });
+
   const updateButton = div.querySelector('.useCaseUpdateButton');
   updateButton.addEventListener('click', () => {
-    if(useCaseUpdateContainerClassList.contains("useCaseUpdateContainer")){
-      useCaseUpdateContainerClassList.remove("useCaseUpdateContainer")
-      useCaseUpdateContainerClassList.add("useCaseUpdateContainerVisible")
+    if (useCaseUpdateContainerClassList.contains("useCaseUpdateContainer")) {
+      useCaseUpdateContainerClassList.remove("useCaseUpdateContainer");
+      useCaseUpdateContainerClassList.add("useCaseUpdateContainerVisible");
     }
 
-    const useCaseUpdateAddButton = document.getElementById("useCaseUpdateAddButton")
-    useCaseUpdateAddButton.addEventListener("click", function() {
-      const useCaseUpdateInputTitel = document.getElementById("useCaseUpdateInputTitel")
-      const useCaseUpdateInputDescription = document.getElementById("useCaseUpdateInputDescription")
-      let titel
-      let description
-      if(!useCaseUpdateInputTitel.value){
-        titel = itemdata.titel
-      }else{
-        titel = useCaseUpdateInputTitel.value
+    const useCaseUpdateAddButton = document.getElementById("useCaseUpdateAddButton");
+    useCaseUpdateAddButton.addEventListener("click", function () {
+      const useCaseUpdateInputTitel = document.getElementById("useCaseUpdateInputTitel");
+      const useCaseUpdateInputDescription = document.getElementById("useCaseUpdateInputDescription");
+      let titel;
+      let description;
+      if (!useCaseUpdateInputTitel.value) {
+        titel = itemdata.titel;
+      } else {
+        titel = useCaseUpdateInputTitel.value;
       }
 
-      if(!useCaseUpdateInputDescription.value){
-        description = itemdata.beschreibung
-      }else{
-        description = useCaseUpdateInputDescription.value
+      if (!useCaseUpdateInputDescription.value) {
+        description = itemdata.beschreibung;
+      } else {
+        description = useCaseUpdateInputDescription.value;
       }
 
-      fetch(baseURL + `usecases/${itemdata.id}`,{
-        method:"PUT",
-        credentials:"include",
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({titel: titel, beschreibung: description, fixed_order: itemdata.fixed_order, account_username: itemdata.account_username })
+      fetch(baseURL + `usecases/${itemdata.id}`, {
+        method: "PUT",
+        credentials: "include",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ titel: titel, beschreibung: description, fixed_order: itemdata.fixed_order,
+                                account_username: itemdata.account_username })
       })
         .then(result => result.text())
         .then(data => {
-          console.log(data)
-          clearList()
-          loadItems()
+          console.log(data);
+          clearList();
+          loadItems();
         })
         .catch(error => {
-          console.error('Error:', error)
-          window.location.href = loginHtmlPath
-        })
-    })
-  })
+          console.error('Error:', error);
+          window.location.href = loginHtmlPath;
+        });
+    });
+  });
+
+  const generateQRCodeButton = div.querySelector('.generateQRCodeButton');
+  generateQRCodeButton.addEventListener('click', () => generateQRCode(itemdata.id));
 }
+
 
 
 function openUseCase(data){
