@@ -469,7 +469,7 @@ function updatechosenSoundfileCurrentPoi(soundfile){
       console.log(data)
       chosenSoundfileId = soundfile.id
       clearListAndMap()
-      loadPoiItems()
+      loadPoiItems(true);
       //loadSoundfiles()
     })
     .catch(error => console.error('Error:', error));
