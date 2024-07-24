@@ -418,6 +418,7 @@ function updatechosenSoundfileCurrentPoi(soundfile){
     .then(data => {
       console.log(data)
       chosenSoundfileId = soundfile.id
+      clearListAndMap()
       loadPoiItems()
       //loadSoundfiles()
     })
