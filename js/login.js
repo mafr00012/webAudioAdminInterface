@@ -5,13 +5,20 @@
   const password = document.getElementById('passwordLogin');
 
 
+  /**
+   * Event listener for DOMContentLoaded.
+   *
+   * checks if the user is already logged in when the document is fully loaded.
+   * If the user is logged in, redirects to the useCaseSelection page.
+   * Handles unexpected responses and errors.
+   */
   document.addEventListener("DOMContentLoaded", async () => {
     try{
       const data = await isLoggedIn()
       if(data === 'true'){
         window.location.href = UseCaseSelectionHTMLPATH;
       } else if (data === 'false') {
-        //muss nichts machen
+        // Do nothing if not logged in
       } else {
         console.error('Unexpected response:', data);
         alert('Unerwartete Antwort vom Server');
@@ -22,6 +29,13 @@
     }
   })
 
+  /**
+   * Event listener for login button click.
+   *
+   * Captures username and password input values and sends them to the server
+   * to attempt a login. Redirects to the use case selection page on successful
+   * login. Alerts the user if the login fails or if there is an unexpected response.
+   */
   loginButton.addEventListener('click', function() {
     const usernameValue = username.value;
     const passwordValue = password.value;

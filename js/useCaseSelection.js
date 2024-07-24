@@ -8,6 +8,14 @@ const addButton = document.getElementById('useCaseAddButton');
 const logoutButton = document.getElementById('logoutButton');
 
 
+/**
+ * Event listener for DOMContentLoaded.
+ *
+ * checks if the user is already logged in when the document is fully loaded.
+ * If the user is logged in, it loads the use case items.
+ * If not, it redirects to the login page.
+ * Handles unexpected responses and errors.
+ */
 document.addEventListener("DOMContentLoaded", async () => {
   try{
     const data = await isLoggedIn()
@@ -27,6 +35,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 })
 
+/**
+ * Event listener for closing the use case update container.
+ *
+ * Toggles the visibility of the use case update container by changing its CSS classes.
+ */
 useCaseUpdateCloseButton.addEventListener("click", function(){
   if(useCaseUpdateContainerClassList.contains("useCaseUpdateContainerVisible")){
     useCaseUpdateContainerClassList.remove("useCaseUpdateContainerVisible")
@@ -34,6 +47,12 @@ useCaseUpdateCloseButton.addEventListener("click", function(){
   }
 })
 
+/**
+ * Event listener for the add button click.
+ *
+ * Captures the title and description input values and sends them to the server
+ * to add a new use case. Reloads the list of use cases upon success.
+ */
 addButton.addEventListener("click", function(){
   const titel = inputTitel.value;
   const description = inputDescription.value;
@@ -54,6 +73,11 @@ addButton.addEventListener("click", function(){
     })
 })
 
+/**
+ * Event listener for the logout button click.
+ *
+ * Sends a logout request to the server and redirects to the login page upon success.
+ */
 logoutButton.addEventListener("click", function() {
   fetch(BaseURL + 'logout', {
     method:"GET",
@@ -68,6 +92,12 @@ logoutButton.addEventListener("click", function() {
     })
 })
 
+/**
+ * Loads the list of use case items from the server.
+ *
+ * Sends a GET request to retrieve use case data and adds each item to the DOM.
+ * Logs a message if no use cases are available.
+ */
 function loadItems() {
   fetch(BaseURL + "usecasesAdmin",{
     method:"GET",
@@ -88,6 +118,19 @@ function loadItems() {
     })
 }
 
+/**
+ * Adds a new item to the dynamic list in the DOM.
+ *
+ * This function creates a list item with buttons to edit, delete, update, and generate a QR code for a use case.
+ * It also sets up event listeners for each button to perform the corresponding actions.
+ *
+ * @param {Object} itemdata - The data object representing the use case item.
+ * @param {string} itemdata.titel - The title of the use case.
+ * @param {string} itemdata.beschreibung - The description of the use case.
+ * @param {number} itemdata.id - The unique identifier for the use case.
+ * @param {string} itemdata.fixed_order - The fixed order for the use case (if applicable).
+ * @param {string} itemdata.account_username - The username associated with the use case.
+ */
 function addItem(itemdata) {
   const list = document.getElementById('dynamicList');
   const listItem = document.createElement('li');
@@ -101,9 +144,11 @@ function addItem(itemdata) {
   listItem.appendChild(div);
   list.appendChild(listItem);
 
+  // Set up event listener for the 'Open Use Case' button
   const openUseCaseButton = div.querySelector('.openUseCaseButton');
   openUseCaseButton.addEventListener('click', () => openUseCase(itemdata.id));
 
+  // Set up event listener for the 'Delete' button
   const deleteButton = div.querySelector('.listItemDeleteButton');
   deleteButton.addEventListener('click', () => {
     list.removeChild(listItem);
@@ -114,6 +159,7 @@ function addItem(itemdata) {
       .then(result => result.text())
       .then(data => {
         console.log(data)
+        alert("Anwendungszweck wurde gelöscht");
       })
       .catch(error => {
         console.error('Error:', error)
@@ -121,6 +167,7 @@ function addItem(itemdata) {
       });
   });
 
+  // Set up event listener for the 'Update' button
   const updateButton = div.querySelector('.useCaseUpdateButton');
   updateButton.addEventListener('click', () => {
     if (useCaseUpdateContainerClassList.contains("useCaseUpdateContainer")) {
@@ -128,6 +175,7 @@ function addItem(itemdata) {
       useCaseUpdateContainerClassList.add("useCaseUpdateContainerVisible");
     }
 
+    // Set up event listener for the 'Add' button in the update container
     const useCaseUpdateAddButton = document.getElementById("useCaseUpdateAddButton");
     useCaseUpdateAddButton.addEventListener("click", function () {
       const useCaseUpdateInputTitel = document.getElementById("useCaseUpdateInputTitel");
@@ -156,6 +204,7 @@ function addItem(itemdata) {
         .then(result => result.text())
         .then(data => {
           console.log(data);
+          alert("Änderungen wurden gespeichert")
           clearList();
           loadItems();
         })
@@ -166,10 +215,18 @@ function addItem(itemdata) {
     });
   });
 
+  // Set up event listener for the 'Generate QR Code' button
   const generateQRCodeButton = div.querySelector('.generateQRCodeButton');
   generateQRCodeButton.addEventListener('click', () => generateQRCode(itemdata.id));
 }
 
+/**
+ * Opens a use case by sending its ID to the server.
+ *
+ * This function sends a POST request to the server to mark the use case as chosen and then redirects to the POIs view page.
+ *
+ * @param {number} data - The ID of the use case to open.
+ */
 function openUseCase(data){
   fetch(BaseURL + "chosenUseCase", {
     method: "POST",
@@ -190,6 +247,11 @@ function openUseCase(data){
     })
 }
 
+/**
+ * Clears all items from the dynamic list in the DOM.
+ *
+ * This function removes all child elements from the dynamic list element, effectively clearing the list.
+ */
 function clearList(){
   const list = document.getElementById('dynamicList');
   list.innerHTML = '';
