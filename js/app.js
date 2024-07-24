@@ -1,12 +1,11 @@
 export const baseURL = 'https://webaudio.uber.space/api/' //http://localhost:3000/
-export const loginHtmlPath = "../../admin/login.html"
-export const useCaseSelectionHTMLPath = '../../admin/useCaseSelection.html'
-export const poisViewHTMLPath = '../../admin/poisView.html'
-export const completeLoginHtmlPathURL = "https://webaudio.uber.space/admin/login.html"
+export const loginHtmlPath = "../../webAudioAdminInterface/login.html"
+export const useCaseSelectionHTMLPath = '../../webAudioAdminInterface/useCaseSelection.html'
+export const poisViewHTMLPath = '../../webAudioAdminInterface/poisView.html'
+export const completeLoginHtmlPathURL = "https://webaudio.uber.space/webAudioAdminInterface/login.html"
 
-document.addEventListener("DOMContentLoaded", function() {
-  window.location.replace(completeLoginHtmlPathURL);
-})
+window.location.replace(completeLoginHtmlPathURL);
+
 export async function isLoggedIn() {
   try {
     const response = await fetch(baseURL + 'isAlreadyLoggedin', {
