@@ -94,10 +94,10 @@ function addItem(itemdata) {
   const div = document.createElement('div');
   div.className = 'list-item';
   div.innerHTML = `<h2>${itemdata.titel}</h2><p>${itemdata.beschreibung}</p>
-    <button class="openUseCaseButton">Öffnen</button>
+    <button class="openUseCaseButton">Bearbeiten</button>
     <button class="listItemDeleteButton">Löschen</button>
-    <button class="useCaseUpdateButton">Bearbeiten</button>
-    <button class="generateQRCodeButton">QR-Code herunterladen</button>`;
+    <button class="useCaseUpdateButton">Ändern</button>
+    <button class="generateQRCodeButton">QR-Code erstellen</button>`;
   listItem.appendChild(div);
   list.appendChild(listItem);
 
