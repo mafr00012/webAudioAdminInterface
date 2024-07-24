@@ -418,6 +418,8 @@ function updatechosenSoundfileCurrentPoi(soundfile){
     .then(data => {
       console.log(data)
       chosenSoundfileId = soundfile.id
+      console.log(soundfile.id)
+      console.log(chosenSoundfileId)
       loadSoundfiles()
     })
     .catch(error => console.error('Error:', error));
