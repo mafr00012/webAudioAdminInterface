@@ -1,8 +1,8 @@
 export const baseURL = 'https://webaudio.uber.space/api/' //http://localhost:3000/
 const applicationName = "admin"
-export const loginHtmlPath = `../../${applicationName}/login.html`
-export const useCaseSelectionHTMLPath = `../../${applicationName}/useCaseSelection.html`
-export const poisViewHTMLPath = `../../${applicationName}/poisView.html`
+export const LoginHTMLPATH = `../../${applicationName}/login.html`
+export const UseCaseSelectionHTMLPATH = `../../${applicationName}/useCaseSelection.html`
+export const PoisViewHTMLPATH = `../../${applicationName}/poisView.html`
 
 
 export async function isLoggedIn() {

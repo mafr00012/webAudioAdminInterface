@@ -1,4 +1,4 @@
-import {baseURL, loginHtmlPath, useCaseSelectionHTMLPath, isLoggedIn} from "./app.js";
+import {baseURL, LoginHTMLPATH, UseCaseSelectionHTMLPATH, isLoggedIn} from "./app.js";
 
 const map = L.map('map', {
   center: [0, 0],
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       isOrderOfPoisImportent();
     } else if (data === 'false') {
       console.log("False: " + data)
-      window.location.href = loginHtmlPath;
+      window.location.href = LoginHTMLPATH;
     } else {
       console.error('Unexpected response:', data);
       alert('Unerwartete Antwort vom Server');
@@ -146,7 +146,7 @@ function onMapClick(e) {
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = loginHtmlPath
+      window.location.href = LoginHTMLPATH
     })
 }
 
@@ -257,7 +257,7 @@ editUseCaseApplyChangesButton.addEventListener('click', function(){
       })
       .catch(error => {
         console.error('Error:', error)
-        window.location.href = loginHtmlPath
+        window.location.href = LoginHTMLPATH
       })
   }
 })
@@ -295,7 +295,7 @@ markerDeleteButton.addEventListener('click', function() {
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = loginHtmlPath
+      window.location.href = LoginHTMLPATH
     })
 })
 
@@ -353,7 +353,7 @@ editUseCaseNavbarSideBarManageButton.addEventListener('click', function(){
 })
 
 fromEditusecaseToUsecaseselectionButton.addEventListener("click", function() {
-  window.location.href = useCaseSelectionHTMLPath;
+  window.location.href = UseCaseSelectionHTMLPATH;
 })
 
 const toggleSwitch = document.getElementById('toggleSwitch');
@@ -457,7 +457,7 @@ dropZone.addEventListener('drop', (e) => {
       })
       .catch(error => {
         console.error('Error:', error)
-        window.location.href = loginHtmlPath
+        window.location.href = LoginHTMLPATH
       })
   }
 });
@@ -538,6 +538,6 @@ function loadSoundfiles(){
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = loginHtmlPath
+      window.location.href = LoginHTMLPATH
     })
 }

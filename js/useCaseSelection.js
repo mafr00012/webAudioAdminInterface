@@ -1,4 +1,4 @@
-import {baseURL, loginHtmlPath, poisViewHTMLPath, isLoggedIn} from "./app.js";
+import {baseURL, LoginHTMLPATH, PoisViewHTMLPATH, isLoggedIn} from "./app.js";
 
 const useCaseUpdateContainerClassList = document.getElementById("useCaseUpdateContainer").classList;
 const useCaseUpdateCloseButton = document.getElementById("useCaseUpdateCloseButton");
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       loadItems();
     } else if (data === 'false') {
       console.log("False: " + data)
-      window.location.href = loginHtmlPath;
+      window.location.href = LoginHTMLPATH;
     } else {
       console.error('Unexpected response:', data);
       alert('Unerwartete Antwort vom Server');
@@ -50,7 +50,7 @@ addButton.addEventListener("click", function(){
     })
     .catch(error => {
       console.error("Error", error)
-      window.location.href = loginHtmlPath
+      window.location.href = LoginHTMLPATH
     })
 })
 
@@ -60,7 +60,7 @@ logoutButton.addEventListener("click", function() {
   }).then(response => response.text())
     .then(data => {
       if(data === 'true'){
-        window.location.href = loginHtmlPath
+        window.location.href = LoginHTMLPATH
       }
     })
     .catch(error => {
@@ -117,7 +117,7 @@ function addItem(itemdata) {
       })
       .catch(error => {
         console.error('Error:', error)
-        window.location.href = loginHtmlPath
+        window.location.href = LoginHTMLPATH
       });
   });
 
@@ -161,7 +161,7 @@ function addItem(itemdata) {
         })
         .catch(error => {
           console.error('Error:', error);
-          window.location.href = loginHtmlPath;
+          window.location.href = LoginHTMLPATH;
         });
     });
   });
@@ -181,14 +181,14 @@ function openUseCase(data){
   }).then(result => result.text())
     .then(data => {
       if(data === 'true'){
-        window.location.href = poisViewHTMLPath
+        window.location.href = PoisViewHTMLPATH
       }else{
         console.error("that didn't work")
       }
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = loginHtmlPath
+      window.location.href = LoginHTMLPATH
     })
 }
 

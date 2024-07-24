@@ -1,9 +1,26 @@
-  import {baseURL, useCaseSelectionHTMLPath, isLoggedIn} from "./app.js";
+  import {baseURL, UseCaseSelectionHTMLPATH, isLoggedIn} from "./app.js";
 
   const loginButton = document.getElementById('loginButton');
   const username = document.getElementById('usernameLogin');
   const password = document.getElementById('passwordLogin');
 
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    try{
+      const data = await isLoggedIn()
+      if(data === 'true'){
+        window.location.href = UseCaseSelectionHTMLPATH;
+      } else if (data === 'false') {
+        //muss nichts machen
+      } else {
+        console.error('Unexpected response:', data);
+        alert('Unerwartete Antwort vom Server');
+      }
+    } catch(error){
+      console.error('Error in DOMContentLoaded listener:', error);
+      alert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
+    }
+  })
 
   loginButton.addEventListener('click', function() {
     const usernameValue = username.value;
@@ -17,7 +34,7 @@
       .then(response => response.text())
       .then(data => {
         if(data === 'true'){
-          window.location.href = useCaseSelectionHTMLPath
+          window.location.href = UseCaseSelectionHTMLPATH
         } else if(data === 'false'){
           console.error('Login failed')
           alert('Benutzername und Passwort passen nicht zusammen');
@@ -30,23 +47,4 @@
         console.error('Error:', error)
         alert("Unerwartete Antwort vom Server");
       })
-  })
-
-  document.addEventListener("DOMContentLoaded", async () => {
-    try{
-      const data = await isLoggedIn()
-      if(data === 'true'){
-        console.log("True: " + data)
-        window.location.href = useCaseSelectionHTMLPath;
-      } else if (data === 'false') {
-        console.log("False: " + data)
-        //muss nichts machen
-      } else {
-        console.error('Unexpected response:', data);
-        alert('Unerwartete Antwort vom Server');
-      }
-    } catch(error){
-      console.error('Error in DOMContentLoaded listener:', error);
-      alert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
-    }
   })
