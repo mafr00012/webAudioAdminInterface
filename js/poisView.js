@@ -25,24 +25,24 @@ const editUseCaseSidebarClassList = document.getElementById('editUseCaseSidebar'
 const fromEditusecaseToUsecaseselectionButton = document.getElementById('fromEditusecaseToUsecaseselectionButton');
 const editUseCaseNameInput = document.getElementById('editUseCaseNameInput')
 const editUseCaseApplyChangesButton = document.getElementById('editUseCaseApplyChangesButton')
-
-let currentPoi = null
-let orderIsImportent = false;
-let countOfPois = 0;
-let bearbeitungsModusAktiv = false;
 const list = document.getElementById('editUseCaseSidebarListOfPOI');
 const openStreatMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 })
 const markers = L.layerGroup().addTo(map);
+const toggleSwitch = document.getElementById('toggleSwitch');
+const dropZone = document.getElementById('drop-zone');
+const soundfileList = document.getElementById('soundfileList');
+const toggleSoundfileList = document.getElementById('toggleSoundfileList');
 
-function poiItem(value, marker, listDiv){
-  return {
-    databaseData: value,
-    marker: marker,
-    div: listDiv
-  }
-}
+let currentPoi = null
+let orderIsImportent = false;
+let countOfPois = 0;
+let bearbeitungsModusAktiv = false;
+let chosenDiv = null
+let chosenSoundfileId = null
+let abgespielteAudio = null;
+
 
 document.addEventListener("DOMContentLoaded", async () => {
   try{
@@ -65,173 +65,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 openStreatMap.addTo(map);
 
-function loadMap(){
-  map.removeLayer(openStreatMap)
-  openStreatMap.addTo(map);
-}
-
-function loadPoiItems(jumpBackToLastCurrentPoi){
-  countOfPois = 0;
-  fetch( BaseURL + "pois",{
-    method:"GET",
-    credentials:"include"
-  })
-    .then(result => result.json())
-    .then(data => {
-      let lastCurrentPoi = null
-      if(jumpBackToLastCurrentPoi){
-        lastCurrentPoi = currentPoi
-      }else{
-        lastCurrentPoi = null
-      }
-      if(orderIsImportent){
-        data.sort((a, b) => a.order - b.order);
-      }
-      data.forEach(value => {
-        countOfPois++;
-        const poi = poiItem(value)
-        addPoiToMap(poi)
-        if(lastCurrentPoi != null) {
-          if (poi.databaseData.id === lastCurrentPoi.databaseData.id) {
-            lastCurrentPoi = poi
-          }
-        }
-      })
-      if(lastCurrentPoi != null){
-        setCurrentPoi(lastCurrentPoi)
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error)
-    })
-}
-
-function isOrderOfPoisImportent(){
-  fetch( BaseURL + "chosenUseCase", {
-    method: "GET",
-    credentials: "include",
-  }).then(result => result.json())
-    .then(data => {
-      if(data.fixed_order === 1){
-        orderIsImportent = true
-        setSwitchOn()
-        loadPoiItems(false)
-      }else{
-        orderIsImportent = false
-        setSwitchOff()
-        loadPoiItems(false)
-      }
-    }).catch(error => {
-    console.error('Error:', error)
-  })
-}
-
-function onMapClick(e) {
-  let latitude = e.latlng.lat
-  let longitude = e.latlng.lng
-  if(longitude > 180 || longitude < -180){
-    longitude = longitude % 180
-  }
-  fetch(BaseURL + "pois",{
-    method:"POST",
-    credentials:"include",
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({order: countOfPois, x_coordinate: latitude, y_coordinate: longitude, name: "titel"}),
-  })
-    .then(result => result.text())
-    .then(data => {
-      console.log(data)
-      clearListAndMap()
-      loadPoiItems(false)
-    })
-    .catch(error => {
-      console.error('Error:', error)
-      window.location.href = LoginHTMLPATH
-    })
-}
-
 map.on('click', onMapClick);
-
-function addPoiToMap(poi) {
-  const latitude = poi.databaseData.x_coordinate
-  const longitude = poi.databaseData.y_coordinate
-  const marker = L.marker([latitude, longitude]).addTo(markers);
-  poi.marker = marker
-  addPoiToList(poi)
-  marker.on('click', function(){
-    setCurrentPoi(poi)
-  })
-  setCurrentPoi(poi)
-}
-
-function addPoiToList(poi) {
-  const itemValue = poi.databaseData;
-  const listItem = document.createElement('li');
-  const div = document.createElement('div');
-  div.className = 'list-item';
-  div.innerHTML = `<h1>${itemValue.name}</h1><p style="display: none">seperator${itemValue.id}seperator</p>`;
-  poi.div = div;
-  div.onclick = function() {setCurrentPoi(poi);};
-  listItem.appendChild(div);
-  list.appendChild(listItem);
-}
-
-function setCurrentPoi(poi) {
-  const latitude = poi.databaseData.x_coordinate
-  let longitude = poi.databaseData.y_coordinate
-
-  currentPoi = poi
-
-  nameDisplay.textContent = `Name: ${poi.databaseData.name}`
-  breitengradAnzeige.textContent = `Breitengrad: ${latitude}`
-  laengengradAnzeige.textContent = `Längengrad: ${longitude}`
-  if(bearbeitungsModusAktiv){
-    editUseCaseNameInput.value = poi.databaseData.name
-    chosenSoundfileId = poi.databaseData.soundfile_id
-    loadSoundfiles()
-  }
-
-  changeBackgroundColorOfChosenListItem(poi)
-  if(!markerMenuClassList.contains('visiblemarkerMenu')&&!markerMenuClassList.contains('editUseCaseMarkerMenuWithSidebar')){
-    openMenue()
-  }
-}
-
-let chosenDiv = null
-
-function changeBackgroundColorOfChosenListItem(poi){
-  const div = poi.div
-  if(chosenDiv === null){
-    chosenDiv = div
-    div.style = 'background-color: #555555'
-  }else{
-    chosenDiv.style = 'background-color: white'
-    div.style = 'background-color: #555555'
-    chosenDiv = div
-  }
-}
-
-function openMenue(){
-  if(!(markerMenuClassList.contains('visiblemarkerMenu')||markerMenuClassList.contains('editUseCaseMarkerMenuWithSidebar'))){
-    if (editUseCaseSidebarClassList.contains('editUseCaseSidebarInvisible')) {
-      markerMenuClassList.remove('markerMenu')
-      markerMenuClassList.add('visiblemarkerMenu')
-      mapClassList.remove('fullMap')
-      mapClassList.add('mapWithMarkerMenu')
-    } else if (editUseCaseSidebarClassList.contains('editUseCaseSidebar')) {
-      markerMenuClassList.remove('markerMenu')
-      markerMenuClassList.add('editUseCaseMarkerMenuWithSidebar')
-      mapClassList.remove('mapWithSidebar')
-      mapClassList.add('mapWithMarkerMenuAndSidebar')
-    }
-    loadMap()
-  }
-}
-
-function clearListAndMap(){
-  list.innerHTML = '';
-  markers.clearLayers();
-}
 
 editUseCaseApplyChangesButton.addEventListener('click', function(){
   const name = editUseCaseNameInput.value
@@ -318,8 +152,6 @@ bearbeitungsModusButton.addEventListener('click', function(){
   }
 })
 
-
-
 editUseCaseNavbarSideBarManageButton.addEventListener('click', function(){
   if(editUseCaseSidebarClassList.contains('editUseCaseSidebar')){
     if(mapClassList.contains('mapWithMarkerMenuAndSidebar')){
@@ -356,7 +188,6 @@ fromEditusecaseToUsecaseselectionButton.addEventListener("click", function() {
   window.location.href = UseCaseSelectionHTMLPATH;
 })
 
-const toggleSwitch = document.getElementById('toggleSwitch');
 toggleSwitch.addEventListener('change', function() {
   orderIsImportent = this.checked;
   if (this.checked) {
@@ -380,6 +211,225 @@ toggleSwitch.addEventListener('change', function() {
       .catch(error => console.error('Error:', error));
   }
 });
+
+dropZone.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  dropZone.classList.add('dragover');
+});
+
+dropZone.addEventListener('dragleave', () => {
+  dropZone.classList.remove('dragover');
+});
+
+dropZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropZone.classList.remove('dragover');
+
+  const files = e.dataTransfer.files;
+  if (files.length > 0) {
+    const formData = new FormData();
+    formData.append('file', files[0]);
+    fetch(BaseURL + "soundfiles", {
+      method:"POST",
+      credentials:"include",
+      body: formData
+    })
+      .then(response => response.text())
+      .then(data => {
+        console.log(data)
+        alert(`Datei "${files[0].name}" wurde erfolgreich hochgeladen.`);
+        loadSoundfiles()
+      })
+      .catch(error => {
+        console.error('Error:', error)
+        window.location.href = LoginHTMLPATH
+      })
+  }
+});
+
+toggleSoundfileList.addEventListener('click', function() {
+  if (soundfileList.style.display === 'none') {
+    soundfileList.style.display = 'block';
+    dropZone.style.display = 'none';
+    toggleSoundfileList.textContent = 'MP3 zu Liste hinzufügen';
+  } else {
+    soundfileList.style.display = 'none';
+    dropZone.style.display = 'block';
+    toggleSoundfileList.textContent = 'Zurück zur Liste';
+  }
+});
+
+function poiItem(value, marker, listDiv){
+  return {
+    databaseData: value,
+    marker: marker,
+    div: listDiv
+  }
+}
+
+function loadMap(){
+  map.removeLayer(openStreatMap)
+  openStreatMap.addTo(map);
+}
+
+function loadPoiItems(jumpBackToLastCurrentPoi){
+  countOfPois = 0;
+  fetch( BaseURL + "pois",{
+    method:"GET",
+    credentials:"include"
+  })
+    .then(result => result.json())
+    .then(data => {
+      let lastCurrentPoi = null
+      if(jumpBackToLastCurrentPoi){
+        lastCurrentPoi = currentPoi
+      }else{
+        lastCurrentPoi = null
+      }
+      if(orderIsImportent){
+        data.sort((a, b) => a.order - b.order);
+      }
+      data.forEach(value => {
+        countOfPois++;
+        const poi = poiItem(value)
+        addPoiToMap(poi)
+        if(lastCurrentPoi != null) {
+          if (poi.databaseData.id === lastCurrentPoi.databaseData.id) {
+            lastCurrentPoi = poi
+          }
+        }
+      })
+      if(lastCurrentPoi != null){
+        setCurrentPoi(lastCurrentPoi)
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error)
+    })
+}
+
+function isOrderOfPoisImportent(){
+  fetch( BaseURL + "chosenUseCase", {
+    method: "GET",
+    credentials: "include",
+  }).then(result => result.json())
+    .then(data => {
+      if(data.fixed_order === 1){
+        orderIsImportent = true
+        setSwitchOn()
+        loadPoiItems(false)
+      }else{
+        orderIsImportent = false
+        setSwitchOff()
+        loadPoiItems(false)
+      }
+    }).catch(error => {
+    console.error('Error:', error)
+  })
+}
+
+function onMapClick(e) {
+  let latitude = e.latlng.lat
+  let longitude = e.latlng.lng
+  if(longitude > 180 || longitude < -180){
+    longitude = longitude % 180
+  }
+  fetch(BaseURL + "pois",{
+    method:"POST",
+    credentials:"include",
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({order: countOfPois, x_coordinate: latitude, y_coordinate: longitude, name: "titel"}),
+  })
+    .then(result => result.text())
+    .then(data => {
+      console.log(data)
+      clearListAndMap()
+      loadPoiItems(false)
+    })
+    .catch(error => {
+      console.error('Error:', error)
+      window.location.href = LoginHTMLPATH
+    })
+}
+
+function addPoiToMap(poi) {
+  const latitude = poi.databaseData.x_coordinate
+  const longitude = poi.databaseData.y_coordinate
+  const marker = L.marker([latitude, longitude]).addTo(markers);
+  poi.marker = marker
+  addPoiToList(poi)
+  marker.on('click', function(){
+    setCurrentPoi(poi)
+  })
+  setCurrentPoi(poi)
+}
+
+function addPoiToList(poi) {
+  const itemValue = poi.databaseData;
+  const listItem = document.createElement('li');
+  const div = document.createElement('div');
+  div.className = 'list-item';
+  div.innerHTML = `<h1>${itemValue.name}</h1><p style="display: none">seperator${itemValue.id}seperator</p>`;
+  poi.div = div;
+  div.onclick = function() {setCurrentPoi(poi);};
+  listItem.appendChild(div);
+  list.appendChild(listItem);
+}
+
+function setCurrentPoi(poi) {
+  const latitude = poi.databaseData.x_coordinate
+  let longitude = poi.databaseData.y_coordinate
+
+  currentPoi = poi
+
+  nameDisplay.textContent = `Name: ${poi.databaseData.name}`
+  breitengradAnzeige.textContent = `Breitengrad: ${latitude}`
+  laengengradAnzeige.textContent = `Längengrad: ${longitude}`
+  if(bearbeitungsModusAktiv){
+    editUseCaseNameInput.value = poi.databaseData.name
+    chosenSoundfileId = poi.databaseData.soundfile_id
+    loadSoundfiles()
+  }
+
+  changeBackgroundColorOfChosenListItem(poi)
+  if(!markerMenuClassList.contains('visiblemarkerMenu')&&!markerMenuClassList.contains('editUseCaseMarkerMenuWithSidebar')){
+    openMenue()
+  }
+}
+
+function changeBackgroundColorOfChosenListItem(poi){
+  const div = poi.div
+  if(chosenDiv === null){
+    chosenDiv = div
+    div.style = 'background-color: #555555'
+  }else{
+    chosenDiv.style = 'background-color: white'
+    div.style = 'background-color: #555555'
+    chosenDiv = div
+  }
+}
+
+function openMenue(){
+  if(!(markerMenuClassList.contains('visiblemarkerMenu')||markerMenuClassList.contains('editUseCaseMarkerMenuWithSidebar'))){
+    if (editUseCaseSidebarClassList.contains('editUseCaseSidebarInvisible')) {
+      markerMenuClassList.remove('markerMenu')
+      markerMenuClassList.add('visiblemarkerMenu')
+      mapClassList.remove('fullMap')
+      mapClassList.add('mapWithMarkerMenu')
+    } else if (editUseCaseSidebarClassList.contains('editUseCaseSidebar')) {
+      markerMenuClassList.remove('markerMenu')
+      markerMenuClassList.add('editUseCaseMarkerMenuWithSidebar')
+      mapClassList.remove('mapWithSidebar')
+      mapClassList.add('mapWithMarkerMenuAndSidebar')
+    }
+    loadMap()
+  }
+}
+
+function clearListAndMap(){
+  list.innerHTML = '';
+  markers.clearLayers();
+}
 
 function setSwitchOn() {
   toggleSwitch.checked = true;
@@ -424,48 +474,6 @@ function updatechosenSoundfileCurrentPoi(soundfile){
     })
     .catch(error => console.error('Error:', error));
 }
-
-const dropZone = document.getElementById('drop-zone');
-let chosenSoundfileId = null
-dropZone.addEventListener('dragover', (e) => {
-  e.preventDefault();
-  dropZone.classList.add('dragover');
-});
-
-dropZone.addEventListener('dragleave', () => {
-  dropZone.classList.remove('dragover');
-});
-
-dropZone.addEventListener('drop', (e) => {
-  e.preventDefault();
-  dropZone.classList.remove('dragover');
-
-  const files = e.dataTransfer.files;
-  if (files.length > 0) {
-    const formData = new FormData();
-    formData.append('file', files[0]);
-    fetch(BaseURL + "soundfiles", {
-      method:"POST",
-      credentials:"include",
-      body: formData
-    })
-      .then(response => response.text())
-      .then(data => {
-        console.log(data)
-        alert(`Datei "${files[0].name}" wurde erfolgreich hochgeladen.`);
-        loadSoundfiles()
-      })
-      .catch(error => {
-        console.error('Error:', error)
-        window.location.href = LoginHTMLPATH
-      })
-  }
-});
-
-let abgespielteAudio = null;
-
-const soundfileList = document.getElementById('soundfileList');
-const toggleSoundfileList = document.getElementById('toggleSoundfileList');
 
 function addSoundFileToList(soundfile){
   const pathToSoundFile = BaseURL + `soundfilesFile/${soundfile.filename}`
@@ -512,18 +520,6 @@ function addSoundFileToList(soundfile){
 function clearSoundfileList(){
   soundfileList.innerHTML= "";
 }
-
-toggleSoundfileList.addEventListener('click', function() {
-  if (soundfileList.style.display === 'none') {
-    soundfileList.style.display = 'block';
-    dropZone.style.display = 'none';
-    toggleSoundfileList.textContent = 'MP3 zu Liste hinzufügen';
-  } else {
-    soundfileList.style.display = 'none';
-    dropZone.style.display = 'block';
-    toggleSoundfileList.textContent = 'Zurück zur Liste';
-  }
-});
 
 function loadSoundfiles(){
   fetch(BaseURL + 'soundfiles', {

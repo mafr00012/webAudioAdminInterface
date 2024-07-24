@@ -170,8 +170,6 @@ function addItem(itemdata) {
   generateQRCodeButton.addEventListener('click', () => generateQRCode(itemdata.id));
 }
 
-
-
 function openUseCase(data){
   fetch(BaseURL + "chosenUseCase", {
     method: "POST",
