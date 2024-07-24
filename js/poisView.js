@@ -1,4 +1,4 @@
-import {baseURL, LoginHTMLPATH, UseCaseSelectionHTMLPATH, isLoggedIn} from "./app.js";
+import {BaseURL, LoginHTMLPATH, UseCaseSelectionHTMLPATH, isLoggedIn} from "./app.js";
 
 const map = L.map('map', {
   center: [0, 0],
@@ -72,7 +72,7 @@ function loadMap(){
 
 function loadPoiItems(jumpBackToLastCurrentPoi){
   countOfPois = 0;
-  fetch( baseURL + "pois",{
+  fetch( BaseURL + "pois",{
     method:"GET",
     credentials:"include"
   })
@@ -107,7 +107,7 @@ function loadPoiItems(jumpBackToLastCurrentPoi){
 }
 
 function isOrderOfPoisImportent(){
-  fetch( baseURL + "chosenUseCase", {
+  fetch( BaseURL + "chosenUseCase", {
     method: "GET",
     credentials: "include",
   }).then(result => result.json())
@@ -132,7 +132,7 @@ function onMapClick(e) {
   if(longitude > 180 || longitude < -180){
     longitude = longitude % 180
   }
-  fetch(baseURL + "pois",{
+  fetch(BaseURL + "pois",{
     method:"POST",
     credentials:"include",
     headers:{'Content-Type':'application/json'},
@@ -239,7 +239,7 @@ editUseCaseApplyChangesButton.addEventListener('click', function(){
     alert("Invalider Name")
   }
   else {
-    fetch(baseURL + `pois/${currentPoi.databaseData.id}`, {
+    fetch(BaseURL + `pois/${currentPoi.databaseData.id}`, {
       method: "PUT",
       credentials: "include",
       headers: {'Content-Type': 'application/json'},
@@ -283,7 +283,7 @@ markerDeleteButton.addEventListener('click', function() {
   nameDisplay.textContent = "Name: "
   breitengradAnzeige.textContent = "Breitengrad: "
   laengengradAnzeige.textContent = "Längengrad: "
-  fetch(baseURL + `pois/${currentPoi.databaseData.id}`,{
+  fetch(BaseURL + `pois/${currentPoi.databaseData.id}`,{
     method:"DELETE",
     credentials:"include",
   })
@@ -361,7 +361,7 @@ toggleSwitch.addEventListener('change', function() {
   orderIsImportent = this.checked;
   if (this.checked) {
     sendOrderToServer()
-    fetch(baseURL + "updateFixedOrderOfChosenUseCase", {
+    fetch(BaseURL + "updateFixedOrderOfChosenUseCase", {
       method: "PUT",
       credentials: "include",
       headers: { 'Content-Type': 'application/json' },
@@ -370,7 +370,7 @@ toggleSwitch.addEventListener('change', function() {
       .then(data => console.log(data))
       .catch(error => console.error('Error:', error));
   } else {
-    fetch(baseURL + "updateFixedOrderOfChosenUseCase", {
+    fetch(BaseURL + "updateFixedOrderOfChosenUseCase", {
       method: "PUT",
       credentials: "include",
       headers: { 'Content-Type': 'application/json' },
@@ -396,7 +396,7 @@ function sendOrderToServer() {
     return { id: poiId, order: index + 1 };
   });
 
-  fetch(baseURL + 'updatePoiOrder', {
+  fetch(BaseURL + 'updatePoiOrder', {
     method: 'PUT',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
@@ -408,7 +408,7 @@ function sendOrderToServer() {
 }
 
 function updatechosenSoundfileCurrentPoi(soundfile){
-  fetch(baseURL + `updatePoiSoundfile/${currentPoi.databaseData.id}`,{
+  fetch(BaseURL + `updatePoiSoundfile/${currentPoi.databaseData.id}`,{
     method: "PUT",
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
@@ -444,7 +444,7 @@ dropZone.addEventListener('drop', (e) => {
   if (files.length > 0) {
     const formData = new FormData();
     formData.append('file', files[0]);
-    fetch(baseURL + "soundfiles", {
+    fetch(BaseURL + "soundfiles", {
       method:"POST",
       credentials:"include",
       body: formData
@@ -468,7 +468,7 @@ const soundfileList = document.getElementById('soundfileList');
 const toggleSoundfileList = document.getElementById('toggleSoundfileList');
 
 function addSoundFileToList(soundfile){
-  const pathToSoundFile = baseURL + `soundfilesFile/${soundfile.filename}`
+  const pathToSoundFile = BaseURL + `soundfilesFile/${soundfile.filename}`
   const item = document.createElement('div');
   item.className = 'soundfile-item';
 
@@ -526,7 +526,7 @@ toggleSoundfileList.addEventListener('click', function() {
 });
 
 function loadSoundfiles(){
-  fetch(baseURL + 'soundfiles', {
+  fetch(BaseURL + 'soundfiles', {
     method: "GET",
     credentials: "include"
   }).then(response => response.json())

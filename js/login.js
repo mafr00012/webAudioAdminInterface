@@ -1,4 +1,4 @@
-  import {baseURL, UseCaseSelectionHTMLPATH, isLoggedIn} from "./app.js";
+  import {BaseURL, UseCaseSelectionHTMLPATH, isLoggedIn} from "./app.js";
 
   const loginButton = document.getElementById('loginButton');
   const username = document.getElementById('usernameLogin');
@@ -25,7 +25,7 @@
   loginButton.addEventListener('click', function() {
     const usernameValue = username.value;
     const passwordValue = password.value;
-    fetch(baseURL + 'loginAdmin', {
+    fetch(BaseURL + 'loginAdmin', {
       method:"POST",
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({ username: usernameValue , password: passwordValue}),

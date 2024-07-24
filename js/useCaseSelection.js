@@ -1,4 +1,4 @@
-import {baseURL, LoginHTMLPATH, PoisViewHTMLPATH, isLoggedIn} from "./app.js";
+import {BaseURL, LoginHTMLPATH, PoisViewHTMLPATH, isLoggedIn} from "./app.js";
 
 const useCaseUpdateContainerClassList = document.getElementById("useCaseUpdateContainer").classList;
 const useCaseUpdateCloseButton = document.getElementById("useCaseUpdateCloseButton");
@@ -37,7 +37,7 @@ useCaseUpdateCloseButton.addEventListener("click", function(){
 addButton.addEventListener("click", function(){
   const titel = inputTitel.value;
   const description = inputDescription.value;
-  fetch(baseURL + 'usecasesAdmin', {
+  fetch(BaseURL + 'usecasesAdmin', {
     method: "POST",
     credentials: "include",
     headers: {'Content-Type':'application/json'},
@@ -55,7 +55,7 @@ addButton.addEventListener("click", function(){
 })
 
 logoutButton.addEventListener("click", function() {
-  fetch(baseURL + 'logout', {
+  fetch(BaseURL + 'logout', {
     method:"GET",
   }).then(response => response.text())
     .then(data => {
@@ -69,7 +69,7 @@ logoutButton.addEventListener("click", function() {
 })
 
 function loadItems() {
-  fetch(baseURL + "usecasesAdmin",{
+  fetch(BaseURL + "usecasesAdmin",{
     method:"GET",
     credentials:"include"
   })
@@ -107,7 +107,7 @@ function addItem(itemdata) {
   const deleteButton = div.querySelector('.listItemDeleteButton');
   deleteButton.addEventListener('click', () => {
     list.removeChild(listItem);
-    fetch(baseURL + `usecases/${itemdata.id}`, {
+    fetch(BaseURL + `usecases/${itemdata.id}`, {
       method: "DELETE",
       credentials: "include"
     })
@@ -146,7 +146,7 @@ function addItem(itemdata) {
         description = useCaseUpdateInputDescription.value;
       }
 
-      fetch(baseURL + `usecases/${itemdata.id}`, {
+      fetch(BaseURL + `usecases/${itemdata.id}`, {
         method: "PUT",
         credentials: "include",
         headers: { 'Content-Type': 'application/json' },
@@ -173,7 +173,7 @@ function addItem(itemdata) {
 
 
 function openUseCase(data){
-  fetch(baseURL + "chosenUseCase", {
+  fetch(BaseURL + "chosenUseCase", {
     method: "POST",
     credentials: "include",
     headers:{'Content-Type':'application/json'},
