@@ -235,24 +235,31 @@ function clearListAndMap(){
 
 editUseCaseApplyChangesButton.addEventListener('click', function(){
   const name = editUseCaseNameInput.value
-  fetch(baseURL + `pois/${currentPoi.databaseData.id}`,{
-    method:"PUT",
-    credentials:"include",
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({order: currentPoi.databaseData.order, x_coordinate: currentPoi.databaseData.x_coordinate,
-      y_coordinate: currentPoi.databaseData.y_coordinate, soundfile_id: currentPoi.databaseData.soundfile_id,
-      usecase_id: currentPoi.databaseData.usecase_id, name: name}),
-  })
-    .then(result => result.text())
-    .then(data => {
-      console.log(data)
-      clearListAndMap()
-      loadPoiItems(true)
+  if(name === "seperator") {
+    alert("Invalider Name")
+  }
+  else {
+    fetch(baseURL + `pois/${currentPoi.databaseData.id}`, {
+      method: "PUT",
+      credentials: "include",
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        order: currentPoi.databaseData.order, x_coordinate: currentPoi.databaseData.x_coordinate,
+        y_coordinate: currentPoi.databaseData.y_coordinate, soundfile_id: currentPoi.databaseData.soundfile_id,
+        usecase_id: currentPoi.databaseData.usecase_id, name: name
+      }),
     })
-    .catch(error => {
-      console.error('Error:', error)
-      window.location.href = loginHtmlPath
-    })
+      .then(result => result.text())
+      .then(data => {
+        console.log(data)
+        clearListAndMap()
+        loadPoiItems(true)
+      })
+      .catch(error => {
+        console.error('Error:', error)
+        window.location.href = loginHtmlPath
+      })
+  }
 })
 
 closeButton.addEventListener('click', function (){
