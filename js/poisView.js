@@ -1,4 +1,4 @@
-import {baseURL, loginHtmlPath, useCaseSelectionHTMLPath} from "./app.js";
+import {baseURL, loginHtmlPath, useCaseSelectionHTMLPath, isLoggedIn} from "./app.js";
 
 const map = L.map('map', {
   center: [0, 0],
@@ -44,14 +44,31 @@ function poiItem(value, marker, listDiv){
   }
 }
 
+document.addEventListener("DOMContentLoaded", async () => {
+  try{
+    const data = await isLoggedIn()
+    if(data === 'true'){
+      console.log("True: " + data)
+      isOrderOfPoisImportent();
+    } else if (data === 'false') {
+      console.log("False: " + data)
+      window.location.href = loginHtmlPath;
+    } else {
+      console.error('Unexpected response:', data);
+      alert('Unerwartete Antwort vom Server');
+    }
+  } catch(error){
+    console.error('Error in DOMContentLoaded listener:', error);
+    alert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
+  }
+})
+
 openStreatMap.addTo(map);
 
 function loadMap(){
   map.removeLayer(openStreatMap)
   openStreatMap.addTo(map);
 }
-
-document.addEventListener("DOMContentLoaded", isOrderOfPoisImportent)
 
 function loadPoiItems(jumpBackToLastCurrentPoi){
   countOfPois = 0;

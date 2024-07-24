@@ -1,4 +1,4 @@
-import {baseURL, loginHtmlPath, poisViewHTMLPath} from "./app.js";
+import {baseURL, loginHtmlPath, poisViewHTMLPath, isLoggedIn, useCaseSelectionHTMLPath} from "./app.js";
 
 const useCaseUpdateContainerClassList = document.getElementById("useCaseUpdateContainer").classList;
 const useCaseUpdateCloseButton = document.getElementById("useCaseUpdateCloseButton");
@@ -7,7 +7,25 @@ const inputDescription = document.getElementById('useCaseInputDescription');
 const addButton = document.getElementById('useCaseAddButton');
 const logoutButton = document.getElementById('logoutButton');
 
-document.addEventListener("DOMContentLoaded", loadItems)
+
+document.addEventListener("DOMContentLoaded", async () => {
+  try{
+    const data = await isLoggedIn()
+    if(data === 'true'){
+      console.log("True: " + data)
+      loadItems();
+    } else if (data === 'false') {
+      console.log("False: " + data)
+      window.location.href = loginHtmlPath;
+    } else {
+      console.error('Unexpected response:', data);
+      alert('Unerwartete Antwort vom Server');
+    }
+  } catch(error){
+    console.error('Error in DOMContentLoaded listener:', error);
+    alert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
+  }
+})
 
 useCaseUpdateCloseButton.addEventListener("click", function(){
   if(useCaseUpdateContainerClassList.contains("useCaseUpdateContainerVisible")){
