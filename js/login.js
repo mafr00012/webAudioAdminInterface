@@ -1,4 +1,4 @@
-  import {baseURL, useCaseSelectionHTMLPath,} from "./app.js";
+  import {baseURL, useCaseSelectionHTMLPath, isLoggedIn} from "./app.js";
 
   const loginButton = document.getElementById('loginButton');
   const username = document.getElementById('usernameLogin');
@@ -30,4 +30,23 @@
         console.error('Error:', error)
         alert("Unerwartete Antwort vom Server");
       })
+  })
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    try{
+      const data = await isLoggedIn()
+      if(data === 'true'){
+        console.log("True: " + data)
+        window.location.href = useCaseSelectionHTMLPath;
+      } else if (data === 'false') {
+        console.log("False: " + data)
+        //muss nichts machen
+      } else {
+        console.error('Unexpected response:', data);
+        alert('Unerwartete Antwort vom Server');
+      }
+    } catch(error){
+      console.error('Error in DOMContentLoaded listener:', error);
+      alert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
+    }
   })
