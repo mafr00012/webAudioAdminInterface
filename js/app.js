@@ -4,7 +4,6 @@ export const useCaseSelectionHTMLPath = '../../webAudioAdminInterface/useCaseSel
 export const poisViewHTMLPath = '../../webAudioAdminInterface/poisView.html'
 export const completeLoginHtmlPathURL = "https://webaudio.uber.space/webAudioAdminInterface/login.html"
 
-window.location.replace(completeLoginHtmlPathURL);
 
 export async function isLoggedIn() {
   try {
