@@ -29,21 +29,3 @@ export async function isLoggedIn() {
     return null;
   }
 }
-
-export function unauthorizedHandlerWithTextoutput(result) {
-  if (!result.ok) {
-    // Überprüfe auf spezifische Statuscodes
-    if (result.status === 401) {
-      // Leite den Benutzer bei 401 Unauthorized zur Login-Seite weiter
-      window.location.href = LoginHTMLPATH;
-      // Wirf einen Fehler, um die weitere Verarbeitung zu stoppen
-      throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
-    }
-
-    // Andere Fehler behandeln
-    return result.text().then(errorMessage => {
-      throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
-    });
-  }
-  return result.text();
-}
