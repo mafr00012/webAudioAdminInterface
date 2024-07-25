@@ -22,10 +22,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   try{
     const data = await isLoggedIn()
     if(data === 'true'){
-      console.log("True: " + data)
       loadItems();
     } else if (data === 'false') {
-      console.log("False: " + data)
       window.location.href = LoginHTMLPATH;
     } else {
       console.error('Unexpected response:', data);
@@ -68,7 +66,7 @@ addButton.addEventListener("click", function(){
     if (!result.ok) {
       if (result.status === 401) {
         window.location.href = LoginHTMLPATH;
-        throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
+        throw new Error('Unauthorized - redirecting to login page');
       }
 
       return result.text().then(errorMessage => {
@@ -77,8 +75,7 @@ addButton.addEventListener("click", function(){
     }
     return result.text();
   })
-    .then(data => {
-      console.log(data)
+    .then(() => {
       clearList()
       loadItems()
     })
@@ -120,7 +117,7 @@ function loadItems() {
     .then(result => result.json())
     .then(data => {
       if (data === null || Array.isArray(data) && data.length === 0 || (typeof data === 'object' && Object.keys(data).length === 0)) {
-        console.log("noch keine Anwendungszwecke vorhanden")
+        console.log("There aren't any Usecases")
       } else {
         data.forEach(value => {
         addItem(value)
@@ -174,17 +171,16 @@ function addItem(itemdata) {
         if (!result.ok) {
           if (result.status === 401) {
             window.location.href = LoginHTMLPATH;
-            throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
+            throw new Error('Unauthorized - redirecting to login page');
           }
 
           return result.text().then(errorMessage => {
-            throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
+            throw new Error(`Error: ${result.status} ${result.statusText} - ${errorMessage}`);
           });
         }
         return result.text();
       })
-      .then(data => {
-        console.log(data)
+      .then(() => {
         alert("Anwendungszweck wurde gelöscht");
       })
       .catch(error => {
@@ -233,17 +229,16 @@ function addItem(itemdata) {
             if (!result.ok) {
               if (result.status === 401) {
                 window.location.href = LoginHTMLPATH;
-                throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
+                throw new Error('Unauthorized - redirecting to login page');
               }
 
               return result.text().then(errorMessage => {
-                throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
+                throw new Error(`Error: ${result.status} ${result.statusText} - ${errorMessage}`);
               });
             }
             return result.text();
           })
-          .then(data => {
-            console.log(data);
+          .then(() => {
             alert("Änderungen wurden gespeichert")
             clearList();
             loadItems();
@@ -277,11 +272,11 @@ function openUseCase(data){
     if (!result.ok) {
       if (result.status === 401) {
         window.location.href = LoginHTMLPATH;
-        throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
+        throw new Error('Unauthorized - redirecting to login page');
       }
 
       return result.text().then(errorMessage => {
-        throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
+        throw new Error(`Error: ${result.status} ${result.statusText} - ${errorMessage}`);
       });
     }
     return result.text();
@@ -290,7 +285,7 @@ function openUseCase(data){
       if(data === 'true'){
         window.location.href = PoisViewHTMLPATH
       }else{
-        console.error("that didn't work")
+        console.error("That didn't work")
       }
     })
     .catch(error => {

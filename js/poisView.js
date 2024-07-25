@@ -51,10 +51,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   try{
     const data = await isLoggedIn()
     if(data === 'true'){
-      console.log("True: " + data)
       isOrderOfPoisImportent();
     } else if (data === 'false') {
-      console.log("False: " + data)
       window.location.href = LoginHTMLPATH;
     } else {
       console.error('Unexpected response:', data);
@@ -96,17 +94,16 @@ editUseCaseApplyChangesButton.addEventListener('click', function(){
         if (!result.ok) {
           if (result.status === 401) {
             window.location.href = LoginHTMLPATH;
-            throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
+            throw new Error('Unauthorized - redirecting to login page');
           }
 
           return result.text().then(errorMessage => {
-            throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
+            throw new Error(`Error: ${result.status} ${result.statusText} - ${errorMessage}`);
           });
         }
         return result.text();
       })
-      .then(data => {
-        console.log(data)
+      .then(() => {
         alert("Name wurde geändert")
         clearListAndMap()
         loadPoiItems(true)
@@ -133,7 +130,7 @@ closeButton.addEventListener('click', function (){
     markerMenuClassList.remove('editUseCaseMarkerMenuWithSidebar')
     markerMenuClassList.add('markerMenu')
   }else{
-    console.error('Something went wrong in the MarkerMenu')
+    console.error('Something went wrong in the MarkerMenu display')
   }
 })
 
@@ -154,17 +151,16 @@ markerDeleteButton.addEventListener('click', function() {
       if (!result.ok) {
         if (result.status === 401) {
           window.location.href = LoginHTMLPATH;
-          throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
+          throw new Error('Unauthorized - redirecting to login page');
         }
 
         return result.text().then(errorMessage => {
-          throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
+          throw new Error(`Error: ${result.status} ${result.statusText} - ${errorMessage}`);
         });
       }
       return result.text();
     })
-    .then(data => {
-      console.log(data)
+    .then(() => {
       clearListAndMap()
       loadPoiItems(false)
     })
@@ -210,7 +206,7 @@ editUseCaseNavbarSideBarManageButton.addEventListener('click', function(){
       mapClassList.remove('mapWithSidebar')
       mapClassList.add('fullMap')
     }else{
-      console.error('in der Sidebar gab es einen Fehler')
+      console.error('Something went wrong at the Sidebar display')
     }
     editUseCaseSidebarClassList.remove('editUseCaseSidebar')
     editUseCaseSidebarClassList.add('editUseCaseSidebarInvisible')
@@ -224,7 +220,7 @@ editUseCaseNavbarSideBarManageButton.addEventListener('click', function(){
       markerMenuClassList.remove('visiblemarkerMenu')
       markerMenuClassList.add('editUseCaseMarkerMenuWithSidebar')
     } else {
-      console.error('in der Sidebar gab es einen Fehler')
+      console.error('Something went wrong at the Sidebar display')
     }
     editUseCaseSidebarClassList.remove('editUseCaseSidebarInvisible')
     editUseCaseSidebarClassList.add('editUseCaseSidebar')
@@ -250,18 +246,14 @@ toggleSwitch.addEventListener('change', function() {
       credentials: "include",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({fixed_order: "1"}),
-    }).then(response => response.text())
-      .then(data => console.log(data))
-      .catch(error => console.error('Error:', error));
+    }).catch(error => console.error('Error:', error));
   } else {
     fetch(BaseURL + "updateFixedOrderOfChosenUseCase", {
       method: "PUT",
       credentials: "include",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({fixed_order: "0"}),
-    }).then(response => response.text())
-      .then(data => console.log(data))
-      .catch(error => console.error('Error:', error));
+    }).catch(error => console.error('Error:', error));
   }
 });
 
@@ -305,17 +297,16 @@ dropZone.addEventListener('drop', (e) => {
         if (!result.ok) {
           if (result.status === 401) {
             window.location.href = LoginHTMLPATH;
-            throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
+            throw new Error('Unauthorized - redirecting to login page');
           }
 
           return result.text().then(errorMessage => {
-            throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
+            throw new Error(`Error: ${result.status} ${result.statusText} - ${errorMessage}`);
           });
         }
         return result.text();
       })
-      .then(data => {
-        console.log(data)
+      .then(() => {
         alert(`Datei "${files[0].name}" wurde erfolgreich hochgeladen.`);
         loadSoundfiles()
       })
@@ -451,17 +442,16 @@ function onMapClick(e) {
       if (!result.ok) {
         if (result.status === 401) {
           window.location.href = LoginHTMLPATH;
-          throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
+          throw new Error('Unauthorized - redirecting to login page');
         }
 
         return result.text().then(errorMessage => {
-          throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
+          throw new Error(`Error: ${result.status} ${result.statusText} - ${errorMessage}`);
         });
       }
       return result.text();
     })
-    .then(data => {
-      console.log(data)
+    .then(() => {
       clearListAndMap()
       loadPoiItems(false)
     })
@@ -617,16 +607,15 @@ function sendOrderToServer() {
       if (!result.ok) {
         if (result.status === 401) {
           window.location.href = LoginHTMLPATH;
-          throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
+          throw new Error('Unauthorized - redirecting to login page');
         }
 
         return result.text().then(errorMessage => {
-          throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
+          throw new Error(`Error: ${result.status} ${result.statusText} - ${errorMessage}`);
         });
       }
       return result.text();
     })
-    .then(data => console.log(data))
     .catch(error => console.error('Error:', error));
 }
 
@@ -647,17 +636,16 @@ function updatechosenSoundfileCurrentPoi(soundfile){
       if (!result.ok) {
         if (result.status === 401) {
           window.location.href = LoginHTMLPATH;
-          throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
+          throw new Error('Unauthorized - redirecting to login page');
         }
 
         return result.text().then(errorMessage => {
-          throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
+          throw new Error(`Error: ${result.status} ${result.statusText} - ${errorMessage}`);
         });
       }
       return result.text();
     })
-    .then(data => {
-      console.log(data)
+    .then(() => {
       alert("soundfile wurde geändert")
       chosenSoundfileId = soundfile.id
       clearListAndMap()
