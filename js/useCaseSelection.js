@@ -64,7 +64,23 @@ addButton.addEventListener("click", function(){
     credentials: "include",
     headers: {'Content-Type':'application/json'},
     body:JSON.stringify({titel, beschreibung: description})
-  }).then(result => result.text())
+  }).then(result => {
+    if (!result.ok) {
+      // Überprüfe auf spezifische Statuscodes
+      if (result.status === 401) {
+        // Leite den Benutzer bei 401 Unauthorized zur Login-Seite weiter
+        window.location.href = LoginHTMLPATH;
+        // Wirf einen Fehler, um die weitere Verarbeitung zu stoppen
+        throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
+      }
+
+      // Andere Fehler behandeln
+      return result.text().then(errorMessage => {
+        throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
+      });
+    }
+    return result.text();
+  })
     .then(data => {
       console.log(data)
       clearList()
@@ -72,7 +88,6 @@ addButton.addEventListener("click", function(){
     })
     .catch(error => {
       console.error("Error", error)
-      window.location.href = LoginHTMLPATH
     })
 })
 
@@ -159,14 +174,29 @@ function addItem(itemdata) {
       method: "DELETE",
       credentials: "include"
     })
-      .then(result => result.text())
+      .then(result => {
+        if (!result.ok) {
+          // Überprüfe auf spezifische Statuscodes
+          if (result.status === 401) {
+            // Leite den Benutzer bei 401 Unauthorized zur Login-Seite weiter
+            window.location.href = LoginHTMLPATH;
+            // Wirf einen Fehler, um die weitere Verarbeitung zu stoppen
+            throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
+          }
+
+          // Andere Fehler behandeln
+          return result.text().then(errorMessage => {
+            throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
+          });
+        }
+        return result.text();
+      })
       .then(data => {
         console.log(data)
         alert("Anwendungszweck wurde gelöscht");
       })
       .catch(error => {
         console.error('Error:', error)
-        window.location.href = LoginHTMLPATH
       });
   });
 
@@ -207,7 +237,23 @@ function addItem(itemdata) {
             account_username: itemdata.account_username
           })
         })
-          .then(result => result.text())
+          .then(result => {
+            if (!result.ok) {
+              // Überprüfe auf spezifische Statuscodes
+              if (result.status === 401) {
+                // Leite den Benutzer bei 401 Unauthorized zur Login-Seite weiter
+                window.location.href = LoginHTMLPATH;
+                // Wirf einen Fehler, um die weitere Verarbeitung zu stoppen
+                throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
+              }
+
+              // Andere Fehler behandeln
+              return result.text().then(errorMessage => {
+                throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
+              });
+            }
+            return result.text();
+          })
           .then(data => {
             console.log(data);
             alert("Änderungen wurden gespeichert")
@@ -216,7 +262,6 @@ function addItem(itemdata) {
           })
           .catch(error => {
             console.error('Error:', error);
-            window.location.href = LoginHTMLPATH;
           });
       }
     });
@@ -240,7 +285,23 @@ function openUseCase(data){
     credentials: "include",
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({id: data}),
-  }).then(result => result.text())
+  }).then(result => {
+    if (!result.ok) {
+      // Überprüfe auf spezifische Statuscodes
+      if (result.status === 401) {
+        // Leite den Benutzer bei 401 Unauthorized zur Login-Seite weiter
+        window.location.href = LoginHTMLPATH;
+        // Wirf einen Fehler, um die weitere Verarbeitung zu stoppen
+        throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
+      }
+
+      // Andere Fehler behandeln
+      return result.text().then(errorMessage => {
+        throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
+      });
+    }
+    return result.text();
+  })
     .then(data => {
       if(data === 'true'){
         window.location.href = PoisViewHTMLPATH
@@ -250,7 +311,6 @@ function openUseCase(data){
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = LoginHTMLPATH
     })
 }
 
