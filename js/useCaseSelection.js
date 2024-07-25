@@ -66,15 +66,11 @@ addButton.addEventListener("click", function(){
     body:JSON.stringify({titel, beschreibung: description})
   }).then(result => {
     if (!result.ok) {
-      // Überprüfe auf spezifische Statuscodes
       if (result.status === 401) {
-        // Leite den Benutzer bei 401 Unauthorized zur Login-Seite weiter
         window.location.href = LoginHTMLPATH;
-        // Wirf einen Fehler, um die weitere Verarbeitung zu stoppen
         throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
       }
 
-      // Andere Fehler behandeln
       return result.text().then(errorMessage => {
         throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
       });
@@ -176,15 +172,11 @@ function addItem(itemdata) {
     })
       .then(result => {
         if (!result.ok) {
-          // Überprüfe auf spezifische Statuscodes
           if (result.status === 401) {
-            // Leite den Benutzer bei 401 Unauthorized zur Login-Seite weiter
             window.location.href = LoginHTMLPATH;
-            // Wirf einen Fehler, um die weitere Verarbeitung zu stoppen
             throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
           }
 
-          // Andere Fehler behandeln
           return result.text().then(errorMessage => {
             throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
           });
@@ -239,15 +231,11 @@ function addItem(itemdata) {
         })
           .then(result => {
             if (!result.ok) {
-              // Überprüfe auf spezifische Statuscodes
               if (result.status === 401) {
-                // Leite den Benutzer bei 401 Unauthorized zur Login-Seite weiter
                 window.location.href = LoginHTMLPATH;
-                // Wirf einen Fehler, um die weitere Verarbeitung zu stoppen
                 throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
               }
 
-              // Andere Fehler behandeln
               return result.text().then(errorMessage => {
                 throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
               });
@@ -287,15 +275,11 @@ function openUseCase(data){
     body:JSON.stringify({id: data}),
   }).then(result => {
     if (!result.ok) {
-      // Überprüfe auf spezifische Statuscodes
       if (result.status === 401) {
-        // Leite den Benutzer bei 401 Unauthorized zur Login-Seite weiter
         window.location.href = LoginHTMLPATH;
-        // Wirf einen Fehler, um die weitere Verarbeitung zu stoppen
         throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
       }
 
-      // Andere Fehler behandeln
       return result.text().then(errorMessage => {
         throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
       });

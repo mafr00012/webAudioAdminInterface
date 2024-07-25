@@ -92,7 +92,19 @@ editUseCaseApplyChangesButton.addEventListener('click', function(){
         usecase_id: currentPoi.databaseData.usecase_id, name: name
       }),
     })
-      .then(result => result.text())
+      .then(result => {
+        if (!result.ok) {
+          if (result.status === 401) {
+            window.location.href = LoginHTMLPATH;
+            throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
+          }
+
+          return result.text().then(errorMessage => {
+            throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
+          });
+        }
+        return result.text();
+      })
       .then(data => {
         console.log(data)
         alert("Name wurde geändert")
@@ -101,7 +113,6 @@ editUseCaseApplyChangesButton.addEventListener('click', function(){
       })
       .catch(error => {
         console.error('Error:', error)
-        window.location.href = LoginHTMLPATH
       })
   }
 })
@@ -139,7 +150,19 @@ markerDeleteButton.addEventListener('click', function() {
     method:"DELETE",
     credentials:"include",
   })
-    .then(result => result.text())
+    .then(result => {
+      if (!result.ok) {
+        if (result.status === 401) {
+          window.location.href = LoginHTMLPATH;
+          throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
+        }
+
+        return result.text().then(errorMessage => {
+          throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
+        });
+      }
+      return result.text();
+    })
     .then(data => {
       console.log(data)
       clearListAndMap()
@@ -147,7 +170,6 @@ markerDeleteButton.addEventListener('click', function() {
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = LoginHTMLPATH
     })
 })
 
@@ -279,7 +301,19 @@ dropZone.addEventListener('drop', (e) => {
       credentials:"include",
       body: formData
     })
-      .then(response => response.text())
+      .then(result => {
+        if (!result.ok) {
+          if (result.status === 401) {
+            window.location.href = LoginHTMLPATH;
+            throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
+          }
+
+          return result.text().then(errorMessage => {
+            throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
+          });
+        }
+        return result.text();
+      })
       .then(data => {
         console.log(data)
         alert(`Datei "${files[0].name}" wurde erfolgreich hochgeladen.`);
@@ -287,7 +321,6 @@ dropZone.addEventListener('drop', (e) => {
       })
       .catch(error => {
         console.error('Error:', error)
-        window.location.href = LoginHTMLPATH
       })
   }
 });
@@ -414,7 +447,19 @@ function onMapClick(e) {
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({order: countOfPois, x_coordinate: latitude, y_coordinate: longitude, name: "titel"}),
   })
-    .then(result => result.text())
+    .then(result => {
+      if (!result.ok) {
+        if (result.status === 401) {
+          window.location.href = LoginHTMLPATH;
+          throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
+        }
+
+        return result.text().then(errorMessage => {
+          throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
+        });
+      }
+      return result.text();
+    })
     .then(data => {
       console.log(data)
       clearListAndMap()
@@ -422,7 +467,6 @@ function onMapClick(e) {
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = LoginHTMLPATH
     })
 }
 
@@ -569,7 +613,19 @@ function sendOrderToServer() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({newOrder: order}),
   })
-    .then(response => response.text())
+    .then(result => {
+      if (!result.ok) {
+        if (result.status === 401) {
+          window.location.href = LoginHTMLPATH;
+          throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
+        }
+
+        return result.text().then(errorMessage => {
+          throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
+        });
+      }
+      return result.text();
+    })
     .then(data => console.log(data))
     .catch(error => console.error('Error:', error));
 }
@@ -587,7 +643,19 @@ function updatechosenSoundfileCurrentPoi(soundfile){
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({soundfile_id: soundfile.id})
   })
-    .then(response => response.text())
+    .then(result => {
+      if (!result.ok) {
+        if (result.status === 401) {
+          window.location.href = LoginHTMLPATH;
+          throw new Error('Nicht autorisiert - Weiterleitung zur Login-Seite.');
+        }
+
+        return result.text().then(errorMessage => {
+          throw new Error(`Fehler: ${result.status} ${result.statusText} - ${errorMessage}`);
+        });
+      }
+      return result.text();
+    })
     .then(data => {
       console.log(data)
       alert("soundfile wurde geändert")
@@ -635,7 +703,11 @@ function addSoundFileToList(soundfile){
     }
     const audio = new Audio(pathToSoundFile);
     abgespielteAudio = audio;
-    audio.play();
+    audio.play()
+      .catch(error => {
+        console.error("Error: " + error);
+        alert("Fehler beim Abspielen der Audio");
+      })
     setTimeout(() => {
       abgespielteAudio = null
       audio.pause();
@@ -672,6 +744,5 @@ function loadSoundfiles(){
     })
     .catch(error => {
       console.error('Error:', error)
-      window.location.href = LoginHTMLPATH
     })
 }
