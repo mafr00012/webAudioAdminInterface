@@ -7,6 +7,8 @@ const inputDescription = document.getElementById('useCaseInputDescription');
 const addButton = document.getElementById('useCaseAddButton');
 const logoutButton = document.getElementById('logoutButton');
 
+let currentItemInUpdateMenu = null;
+
 
 /**
  * Event listener for DOMContentLoaded.
@@ -45,6 +47,7 @@ useCaseUpdateCloseButton.addEventListener("click", function(){
     useCaseUpdateContainerClassList.remove("useCaseUpdateContainerVisible")
     useCaseUpdateContainerClassList.add("useCaseUpdateContainer")
   }
+  currentItemInUpdateMenu = null;
 })
 
 /**
@@ -174,7 +177,7 @@ function addItem(itemdata) {
       useCaseUpdateContainerClassList.remove("useCaseUpdateContainer");
       useCaseUpdateContainerClassList.add("useCaseUpdateContainerVisible");
     }
-
+    currentItemInUpdateMenu = div;
     // Set up event listener for the 'Add' button in the update container
     const useCaseUpdateAddButton = document.getElementById("useCaseUpdateAddButton");
     useCaseUpdateAddButton.addEventListener("click", function () {
@@ -182,36 +185,40 @@ function addItem(itemdata) {
       const useCaseUpdateInputDescription = document.getElementById("useCaseUpdateInputDescription");
       let titel;
       let description;
-      if (!useCaseUpdateInputTitel.value) {
-        titel = itemdata.titel;
-      } else {
-        titel = useCaseUpdateInputTitel.value;
-      }
+      if(currentItemInUpdateMenu === div) {
+        if (!useCaseUpdateInputTitel.value) {
+          titel = itemdata.titel;
+        } else {
+          titel = useCaseUpdateInputTitel.value;
+        }
 
-      if (!useCaseUpdateInputDescription.value) {
-        description = itemdata.beschreibung;
-      } else {
-        description = useCaseUpdateInputDescription.value;
-      }
+        if (!useCaseUpdateInputDescription.value) {
+          description = itemdata.beschreibung;
+        } else {
+          description = useCaseUpdateInputDescription.value;
+        }
 
-      fetch(BaseURL + `usecases/${itemdata.id}`, {
-        method: "PUT",
-        credentials: "include",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ titel: titel, beschreibung: description, fixed_order: itemdata.fixed_order,
-                                account_username: itemdata.account_username })
-      })
-        .then(result => result.text())
-        .then(data => {
-          console.log(data);
-          alert("Änderungen wurden gespeichert")
-          clearList();
-          loadItems();
+        fetch(BaseURL + `usecases/${itemdata.id}`, {
+          method: "PUT",
+          credentials: "include",
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            titel: titel, beschreibung: description, fixed_order: itemdata.fixed_order,
+            account_username: itemdata.account_username
+          })
         })
-        .catch(error => {
-          console.error('Error:', error);
-          window.location.href = LoginHTMLPATH;
-        });
+          .then(result => result.text())
+          .then(data => {
+            console.log(data);
+            alert("Änderungen wurden gespeichert")
+            clearList();
+            loadItems();
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            window.location.href = LoginHTMLPATH;
+          });
+      }
     });
   });
 
