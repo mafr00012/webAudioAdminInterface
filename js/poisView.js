@@ -246,6 +246,18 @@ toggleSwitch.addEventListener('change', function() {
       credentials: "include",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({fixed_order: "1"}),
+    }).then(result => {
+      if (!result.ok) {
+        if (result.status === 401) {
+          window.location.href = LoginHTMLPATH;
+          throw new Error('Unauthorized - redirecting to login page');
+        }
+
+        return result.text().then(errorMessage => {
+          throw new Error(`Error: ${result.status} ${result.statusText} - ${errorMessage}`);
+        });
+      }
+      return result.text();
     }).catch(error => console.error('Error:', error));
   } else {
     fetch(BaseURL + "updateFixedOrderOfChosenUseCase", {
@@ -253,6 +265,18 @@ toggleSwitch.addEventListener('change', function() {
       credentials: "include",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({fixed_order: "0"}),
+    }).then(result => {
+      if (!result.ok) {
+        if (result.status === 401) {
+          window.location.href = LoginHTMLPATH;
+          throw new Error('Unauthorized - redirecting to login page');
+        }
+
+        return result.text().then(errorMessage => {
+          throw new Error(`Error: ${result.status} ${result.statusText} - ${errorMessage}`);
+        });
+      }
+      return result.text();
     }).catch(error => console.error('Error:', error));
   }
 });
@@ -367,7 +391,19 @@ function loadPoiItems(jumpBackToLastCurrentPoi){
     method:"GET",
     credentials:"include"
   })
-    .then(result => result.json())
+    .then(result => {
+      if (!result.ok) {
+        if (result.status === 401) {
+          window.location.href = LoginHTMLPATH;
+          throw new Error('Unauthorized - redirecting to login page');
+        }
+
+        return result.text().then(errorMessage => {
+          throw new Error(`Error: ${result.status} ${result.statusText} - ${errorMessage}`);
+        });
+      }
+      return result.json();
+    })
     .then(data => {
       let lastCurrentPoi = null
       if(jumpBackToLastCurrentPoi){
@@ -405,7 +441,19 @@ function isOrderOfPoisImportent(){
   fetch( BaseURL + "chosenUseCase", {
     method: "GET",
     credentials: "include",
-  }).then(result => result.json())
+  }).then(result => {
+    if (!result.ok) {
+      if (result.status === 401) {
+        window.location.href = LoginHTMLPATH;
+        throw new Error('Unauthorized - redirecting to login page');
+      }
+
+      return result.text().then(errorMessage => {
+        throw new Error(`Error: ${result.status} ${result.statusText} - ${errorMessage}`);
+      });
+    }
+    return result.json();
+  })
     .then(data => {
       if(data.fixed_order === 1){
         orderIsImportent = true
@@ -723,7 +771,19 @@ function loadSoundfiles(){
   fetch(BaseURL + 'soundfiles', {
     method: "GET",
     credentials: "include"
-  }).then(response => response.json())
+  }).then(result => {
+    if (!result.ok) {
+      if (result.status === 401) {
+        window.location.href = LoginHTMLPATH;
+        throw new Error('Unauthorized - redirecting to login page');
+      }
+
+      return result.text().then(errorMessage => {
+        throw new Error(`Error: ${result.status} ${result.statusText} - ${errorMessage}`);
+      });
+    }
+    return result.json();
+  })
     .then(data => {
       clearSoundfileList();
       data.forEach( value => {
