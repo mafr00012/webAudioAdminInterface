@@ -114,7 +114,19 @@ function loadItems() {
     method:"GET",
     credentials:"include"
   })
-    .then(result => result.json())
+    .then(result => {
+      if (!result.ok) {
+        if (result.status === 401) {
+          window.location.href = LoginHTMLPATH;
+          throw new Error('Unauthorized - redirecting to login page');
+        }
+
+        return result.text().then(errorMessage => {
+          throw new Error(`Error: ${result.status} ${result.statusText} - ${errorMessage}`);
+        });
+      }
+      return result.json();
+    })
     .then(data => {
       if (data === null || Array.isArray(data) && data.length === 0 || (typeof data === 'object' && Object.keys(data).length === 0)) {
         console.log("There aren't any Usecases")
